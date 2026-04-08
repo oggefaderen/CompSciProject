@@ -55,4 +55,3 @@ The notebook should contain your analysis and code. Please structure it into the
 4. Discussion. Think critically about your creation
     * What went well?
     * What is still missing? What could be improved? Why?
-    
