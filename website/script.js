@@ -536,7 +536,7 @@ function renderDownloads() {
     ["Top 100 hubs", "top100_outgoing_v2.csv", "The highest outgoing-degree characters after the v2 cleanup."],
     ["Quote corpus", "characters_quotes.csv", "Per-character quotes with speaker and recipient IDs where available."],
     ["Character biographies", "characters_bio.csv", "Biography text used as context for analysis and scoring."],
-    ["Network notebook", "network.ipynb", "The notebook that builds and explores the relationship graph."],
+    ["Network notebook", "https://github.com/oggefaderen/CompSciProject/raw/main/network.ipynb", "The notebook that builds and explores the relationship graph."],
   ];
 
   document.getElementById("download-grid").innerHTML = downloads.map(([title, href, description]) => `
