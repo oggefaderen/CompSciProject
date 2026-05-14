@@ -42,6 +42,9 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+body.lightbox-open {
+  overflow: hidden;
+}
 
 a {
   color: var(--gold);
@@ -398,6 +401,61 @@ h1, h2, h3, h4 {
 }
 .ego-grid .figure-block {
   margin: 0;
+  position: relative;
+  isolation: isolate;
+}
+.ego-grid .figure-block:hover {
+  z-index: 3;
+}
+.ego-grid .figure-block img {
+  transform-origin: center;
+  cursor: zoom-in;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+  will-change: transform;
+}
+.ego-grid .figure-block:hover img {
+  transform: scale(1.035);
+  border-color: rgba(227, 195, 130, 0.72);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.5);
+}
+.ego-expand-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(227, 195, 130, 0.58);
+  border-radius: var(--radius);
+  background: rgba(12, 13, 17, 0.72);
+  color: var(--gold-bright);
+  box-shadow: var(--shadow-soft);
+  cursor: zoom-in;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+.ego-expand-button span {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+.ego-expand-button:hover,
+.ego-expand-button:focus-visible {
+  background: rgba(201, 166, 97, 0.18);
+  border-color: var(--gold-bright);
+  color: var(--ink);
+  outline: none;
+  transform: translateY(-1px);
 }
 .ego-grid figcaption {
   font-style: normal;
@@ -431,6 +489,104 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
   color: var(--gold);
   margin: 70px 0 12px;
+}
+
+.ego-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 34px;
+}
+.ego-lightbox[hidden] {
+  display: none;
+}
+.ego-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 6, 9, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.ego-lightbox-panel {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 94vw);
+  max-height: calc(100vh - 68px);
+  overflow: auto;
+  padding: 18px 18px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.ego-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(227, 195, 130, 0.58);
+  border-radius: var(--radius);
+  background: rgba(12, 13, 17, 0.82);
+  color: var(--gold-bright);
+  cursor: pointer;
+}
+.ego-lightbox-close span {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.ego-lightbox-close:hover,
+.ego-lightbox-close:focus-visible {
+  background: rgba(201, 166, 97, 0.18);
+  border-color: var(--gold-bright);
+  color: var(--ink);
+  outline: none;
+}
+.ego-lightbox-image {
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 210px);
+  object-fit: contain;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.ego-lightbox-caption {
+  margin-top: 16px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.ego-lightbox-caption strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1.35;
+}
+.ego-lightbox-caption span {
+  display: block;
+  margin-top: 7px;
+  font-size: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ego-grid .figure-block img {
+    transition: none;
+  }
+  .ego-grid .figure-block:hover img {
+    transform: none;
+  }
+  .ego-expand-button {
+    transition: none;
+  }
 }
 
 .figure-placeholder {
@@ -582,6 +738,17 @@ h1, h2, h3, h4 {
   }
   .ego-grid {
     grid-template-columns: 1fr;
+  }
+  .ego-lightbox {
+    padding: 14px;
+  }
+  .ego-lightbox-panel {
+    width: min(100%, 94vw);
+    max-height: calc(100vh - 28px);
+    padding: 12px 12px 18px;
+  }
+  .ego-lightbox-image {
+    max-height: calc(100vh - 190px);
   }
   .drop-cap::first-letter {
     font-size: 3.4rem;
