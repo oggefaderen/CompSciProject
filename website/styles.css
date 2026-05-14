@@ -389,6 +389,50 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
+.ego-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 40px auto 50px;
+  max-width: var(--max);
+}
+.ego-grid .figure-block {
+  margin: 0;
+}
+.ego-grid figcaption {
+  font-style: normal;
+  text-align: left;
+  margin-top: 12px;
+}
+.ego-grid figcaption strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1.35;
+}
+.ego-grid figcaption span {
+  display: block;
+  margin-top: 7px;
+  font-family: var(--serif);
+  font-size: 0.94rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.subsection-title {
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 70px 0 12px;
+}
+
 .figure-placeholder {
   display: flex;
   flex-direction: column;
@@ -534,6 +578,9 @@ h1, h2, h3, h4 {
     padding: 70px 22px;
   }
   .figure-row {
+    grid-template-columns: 1fr;
+  }
+  .ego-grid {
     grid-template-columns: 1fr;
   }
   .drop-cap::first-letter {

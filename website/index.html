@@ -272,40 +272,31 @@
           </p>
         </div>
 
-        <div class="figure-grid">
-          <figure class="figure-block">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 4.1 · placeholder</span>
-              <span class="placeholder-file">figures/storyline-stark.png</span>
-              <span class="placeholder-desc">TF-IDF wordcloud for the Stark storyline.</span>
-            </div>
-            <figcaption>The Stark vocabulary.</figcaption>
-          </figure>
-          <figure class="figure-block">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 4.2 · placeholder</span>
-              <span class="placeholder-file">figures/storyline-lannister.png</span>
-              <span class="placeholder-desc">TF-IDF wordcloud for the Lannister storyline.</span>
-            </div>
-            <figcaption>The Lannister vocabulary.</figcaption>
-          </figure>
-          <figure class="figure-block">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 4.3 · placeholder</span>
-              <span class="placeholder-file">figures/storyline-targaryen.png</span>
-              <span class="placeholder-desc">TF-IDF wordcloud for the Targaryen storyline.</span>
-            </div>
-            <figcaption>The Targaryen vocabulary.</figcaption>
-          </figure>
-          <figure class="figure-block">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 4.4 · placeholder</span>
-              <span class="placeholder-file">figures/storyline-extra.png</span>
-              <span class="placeholder-desc">Fourth storyline — Night's Watch / Dragons / TBD.</span>
-            </div>
-            <figcaption>A fourth thread.</figcaption>
-          </figure>
-        </div>
+        <figure class="figure-block">
+          <img
+            src="figures/word_clouds/main_cr_cloud.png"
+            alt="Side-by-side TF-IDF word clouds for the central characters of A Song of Ice and Fire, each character represented by the words most distinctively associated with their storyline."
+          />
+          <figcaption>
+            [PLACEHOLDER CAPTION] The language of the main characters.
+            Each cloud is built from biography and quote text using
+            TF-IDF, so the words shown are the ones that single this
+            character out — not the ones they share with everyone else.
+          </figcaption>
+        </figure>
+
+        <figure class="figure-block">
+          <img
+            src="figures/word_clouds/house_cloud.png"
+            alt="Grid of TF-IDF word clouds, one per major house in A Song of Ice and Fire, showing the words most distinctive to each house's collected character pages."
+          />
+          <figcaption>
+            [PLACEHOLDER CAPTION] The language of the houses. Pooling
+            all members of a house gives a collective vocabulary —
+            winter and oaths for the Starks, gold and debt for the
+            Lannisters, fire and blood for the Targaryens.
+          </figcaption>
+        </figure>
 
         <div class="prose">
           <p>
@@ -362,22 +353,84 @@
           </figcaption>
         </figure>
 
-        <div class="figure-row">
-          <figure class="figure-block figure-half">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 5.3 · placeholder</span>
-              <span class="placeholder-file">figures/karma-villains.png</span>
-              <span class="placeholder-desc">Lowest average outgoing karma — the villains.</span>
-            </div>
-            <figcaption>Who sees the worst in everyone.</figcaption>
+        <h3 class="subsection-title">Ten points of view</h3>
+        <p class="prose-note">
+          Each panel below is one character's outgoing karma: their view
+          of the people around them. Red edges mark enemy scores, grey
+          edges mark neutral ties, green edges mark friend scores, and
+          thicker lines sit farther from the neutral middle.
+        </p>
+
+        <div id="ego-networks" class="ego-grid">
+          <figure class="figure-block">
+            <img src="figures/ego_networks/jon_snow.png" alt="Karma ego network for Jon Snow." />
+            <figcaption>
+              <strong>Jon Snow</strong>
+              <span>Jon's plot is unusually loyal: green ties cluster around the Starks and Night's Watch, while the red edges isolate clear threats such as Ramsay and hostile commanders.</span>
+            </figcaption>
           </figure>
-          <figure class="figure-block figure-half">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 5.4 · placeholder</span>
-              <span class="placeholder-file">figures/karma-saints.png</span>
-              <span class="placeholder-desc">Highest average outgoing karma — the saints.</span>
-            </div>
-            <figcaption>And who, against the odds, sees the best.</figcaption>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/daenerys_targaryen.png" alt="Karma ego network for Daenerys Targaryen." />
+            <figcaption>
+              <strong>Daenerys Targaryen</strong>
+              <span>Daenerys is split between loyal Targaryen and companion ties and a wide enemy field of usurpers, rivals, and slave-trade antagonists.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/tyrion_lannister.png" alt="Karma ego network for Tyrion Lannister." />
+            <figcaption>
+              <strong>Tyrion Lannister</strong>
+              <span>Tyrion's network is mostly neutral political contact, but the deepest red edges point into the Lannister court while his green ties are chosen allies and outsiders.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/cersei_lannister.png" alt="Karma ego network for Cersei Lannister." />
+            <figcaption>
+              <strong>Cersei Lannister</strong>
+              <span>Cersei has the harshest balance in the grid: enemy and neutral edges dominate, and positive ties shrink to a small circle of family or useful allies.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/robb_stark.png" alt="Karma ego network for Robb Stark." />
+            <figcaption>
+              <strong>Robb Stark</strong>
+              <span>Robb's green edges sit with Stark and Tully kin, while the red edges cut through Freys, Boltons, and Lannisters: the war reduced to personal ties.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/theon_greyjoy.png" alt="Karma ego network for Theon Greyjoy." />
+            <figcaption>
+              <strong>Theon Greyjoy</strong>
+              <span>Theon is pulled between Stark and Greyjoy clusters. The green Stark ties show remembered loyalty, while the red Bolton and Greyjoy edges capture coercion and betrayal.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/sandor_clegane.png" alt="Karma ego network for Sandor Clegane." />
+            <figcaption>
+              <strong>Sandor Clegane</strong>
+              <span>Sandor's ego network is mostly hostile or wary, especially around Lannister and Clegane contacts. The few green ties to Sansa, Tyrion, and Bronn stand out.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/melisandre.png" alt="Karma ego network for Melisandre." />
+            <figcaption>
+              <strong>Melisandre</strong>
+              <span>Melisandre sees the realm through conflict: red edges dominate the panel, with positive ties focused narrowly on Stannis, her faith, and a few useful allies.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/petyr_baelish.png" alt="Karma ego network for Petyr Baelish." />
+            <figcaption>
+              <strong>Petyr Baelish</strong>
+              <span>Littlefinger's graph is mostly grey rather than green: a web of instrumental contacts across houses, with red edges where manipulation turns into direct harm.</span>
+            </figcaption>
+          </figure>
+          <figure class="figure-block">
+            <img src="figures/ego_networks/walder_frey.png" alt="Karma ego network for Walder Frey." />
+            <figcaption>
+              <strong>Walder Frey</strong>
+              <span>Walder's network is family-first, with many green Frey ties. The Stark and Tully wedding targets form the darkest red edges in the panel.</span>
+            </figcaption>
           </figure>
         </div>
 
