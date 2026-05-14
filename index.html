@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Karma in Westeros | Character Networks in A Song of Ice and Fire</title>
+    <meta
+      name="description"
+      content="A data story about A Song of Ice and Fire characters, their relationship network, and an LLM-scored karma layer."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Site navigation">
+      <a class="brand" href="#top" aria-label="Karma in Westeros home">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span>Karma in Westeros</span>
+      </a>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#dataset">Dataset</a>
+        <a href="#network">Network</a>
+        <a href="#karma">Karma</a>
+        <a href="#text">Text</a>
+        <a href="#downloads">Downloads</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">What does power feel like in Westeros?</h1>
+          <p>
+            We mapped 3,690 characters from A Wiki of Ice and Fire, then layered
+            relationship scores onto the most connected figures to see who links
+            the story together, and who seems to move through it with warmth,
+            suspicion, loyalty, or contempt.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#network">Explore the network</a>
+            <a class="button button-secondary" href="#downloads">Get the data</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Network overview visualization">
+          <svg id="hero-network" role="img" aria-label="Top character network constellation"></svg>
+        </div>
+      </section>
+
+      <section id="dataset" class="section section-light" aria-labelledby="dataset-title">
+        <div class="section-heading">
+          <h2 id="dataset-title">The Dataset</h2>
+          <p>
+            The project starts with character pages, biographies, affiliations,
+            and quote records. The cleaned second pass removes inflated
+            family-tree links so the network is driven by narrative mentions and
+            affiliations rather than genealogy diagrams.
+          </p>
+        </div>
+
+        <div class="metric-grid" aria-live="polite">
+          <article class="metric-card">
+            <span class="metric-value" id="metric-characters">...</span>
+            <span class="metric-label">characters</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-value" id="metric-links">...</span>
+            <span class="metric-label">affiliation links</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-value" id="metric-karma">...</span>
+            <span class="metric-label">scored relationships</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-value" id="metric-quotes">...</span>
+            <span class="metric-label">quote records</span>
+          </article>
+        </div>
+
+        <div class="split-panel">
+          <div>
+            <h3>Why this network matters</h3>
+            <p>
+              A character's importance is not only about page length or fame.
+              In this project, importance comes from the web of named
+              relationships around them. The hubs are the people whose pages
+              point outward to many other characters.
+            </p>
+          </div>
+          <div class="rank-panel">
+            <div class="panel-title">Most connected characters</div>
+            <div id="degree-bars" class="bar-stack"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="network" class="section section-ink" aria-labelledby="network-title">
+        <div class="section-heading">
+          <h2 id="network-title">The Story as a Social Map</h2>
+          <p>
+            Each dot is a major character. Lines connect high-degree characters
+            where the cleaned data has a relationship. Color hints at allegiance,
+            while line tone hints at the karma score where one exists.
+          </p>
+        </div>
+
+        <div class="network-layout">
+          <div class="network-frame">
+            <svg id="main-network" role="img" aria-label="Interactive character relationship network"></svg>
+          </div>
+          <aside class="profile-panel" aria-live="polite">
+            <label for="character-search">Character</label>
+            <div class="search-row">
+              <input
+                id="character-search"
+                list="character-options"
+                autocomplete="off"
+                placeholder="Search a name"
+              />
+              <button id="character-go" class="icon-button" type="button" aria-label="Open character">
+                <span aria-hidden="true">Go</span>
+              </button>
+            </div>
+            <datalist id="character-options"></datalist>
+
+            <div id="character-profile" class="character-profile">
+              <h3>Selecting Tyrion Lannister...</h3>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="karma" class="section section-light" aria-labelledby="karma-title">
+        <div class="section-heading">
+          <h2 id="karma-title">A Karma Layer</h2>
+          <p>
+            For the top 100 connected characters, a local Gemma model scored
+            how each source character appears to feel toward each target on a
+            1 to 10 scale. The result is not canon truth; it is a machine-read
+            emotional layer that can be challenged, explored, and improved.
+          </p>
+        </div>
+
+        <div class="karma-grid">
+          <div class="rank-panel">
+            <div class="panel-title">Score distribution</div>
+            <div id="karma-distribution" class="score-bars"></div>
+          </div>
+
+          <div class="rank-panel">
+            <div class="panel-header">
+              <div class="panel-title">Average outgoing karma</div>
+              <div class="segmented-control" role="group" aria-label="Karma ranking mode">
+                <button class="segment active" type="button" data-karma-mode="highest">Highest</button>
+                <button class="segment" type="button" data-karma-mode="lowest">Lowest</button>
+              </div>
+            </div>
+            <div id="karma-rankings" class="karma-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="text" class="section section-paper" aria-labelledby="text-title">
+        <div class="section-heading">
+          <h2 id="text-title">What the Words Emphasize</h2>
+          <p>
+            The quote corpus gives the network a textual layer. Instead of only
+            seeing who is connected, we can inspect the language that clusters
+            around the story's central characters.
+          </p>
+        </div>
+
+        <div class="text-layout">
+          <div class="word-panel">
+            <div class="panel-title">Frequent quote terms</div>
+            <div id="word-cloud" class="word-cloud"></div>
+          </div>
+          <div class="quote-panel">
+            <div class="panel-title">Quote search</div>
+            <div class="search-row">
+              <input id="quote-search" type="search" placeholder="Try power, oath, Stark, dragon" />
+              <button id="quote-clear" class="icon-button" type="button">Clear</button>
+            </div>
+            <div id="quote-results" class="quote-results"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="downloads" class="section section-light" aria-labelledby="downloads-title">
+        <div class="section-heading">
+          <h2 id="downloads-title">Use the Data</h2>
+          <p>
+            The website is the readable story. The notebooks contain the
+            behind-the-scenes scraping, cleaning, network construction, and
+            karma-scoring choices.
+          </p>
+        </div>
+
+        <div class="download-grid" id="download-grid"></div>
+
+        <div class="notebook-strip">
+          <a
+            class="button button-primary"
+            href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/llm.ipynb"
+            rel="noreferrer"
+          >
+            Open explainer notebook on nbviewer
+          </a>
+          <a class="button button-secondary" href="llm.ipynb" download>Download notebook</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Built from the CompSciProject CSV outputs. Data source: A Wiki of Ice
+        and Fire character pages.
+      </p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
