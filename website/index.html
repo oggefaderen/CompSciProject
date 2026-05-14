@@ -3,220 +3,460 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Karma in Westeros | Character Networks in A Song of Ice and Fire</title>
+    <title>Karma in Westeros | Networks, Houses, and Conflict in A Song of Ice and Fire</title>
     <meta
       name="description"
-      content="A data story about A Song of Ice and Fire characters, their relationship network, and an LLM-scored karma layer."
+      content="A data story about the characters, houses, storylines, and conflicts of A Song of Ice and Fire."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header" aria-label="Site navigation">
       <a class="brand" href="#top" aria-label="Karma in Westeros home">
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>Karma in Westeros</span>
+        <span class="brand-sigil" aria-hidden="true">✦</span>
+        <span class="brand-name">Karma in Westeros</span>
       </a>
       <nav class="nav-links" aria-label="Page sections">
-        <a href="#dataset">Dataset</a>
-        <a href="#network">Network</a>
+        <a href="#motivation">Motivation</a>
+        <a href="#topography">Topography</a>
+        <a href="#houses">Houses</a>
+        <a href="#storylines">Storylines</a>
         <a href="#karma">Karma</a>
-        <a href="#text">Text</a>
-        <a href="#downloads">Downloads</a>
+        <a href="#downloads">Data</a>
       </nav>
     </header>
 
     <main id="top">
+      <!-- ============== HERO ============== -->
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <h1 id="hero-title">What does power feel like in Westeros?</h1>
-          <p>
-            We mapped 3,690 characters from A Wiki of Ice and Fire, then layered
-            relationship scores onto the most connected figures to see who links
-            the story together, and who seems to move through it with warmth,
-            suspicion, loyalty, or contempt.
+        <div class="hero-inner">
+          <p class="eyebrow">A Song of Ice and Fire · data story</p>
+          <h1 id="hero-title">
+            When you play the game of thrones,<br />
+            <span class="hero-accent">someone takes notes.</span>
+          </h1>
+          <p class="hero-lede">
+            Westeros has thousands of named characters, hundreds of houses,
+            and a chronicle full of grudges. We turn the wiki of <em>A Song
+            of Ice and Fire</em> into a network, ask which characters truly
+            hold it together, and use language and an LLM-scored
+            <em>karma</em> layer to see how conflict shapes the story.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#network">Explore the network</a>
-            <a class="button button-secondary" href="#downloads">Get the data</a>
+            <a class="button button-primary" href="#motivation">Begin the chronicle</a>
+            <a class="button button-secondary" href="#downloads">Take the data</a>
           </div>
         </div>
-        <div class="hero-visual" aria-label="Network overview visualization">
-          <svg id="hero-network" role="img" aria-label="Top character network constellation"></svg>
+        <div class="hero-divider" aria-hidden="true">
+          <span class="ornament">❖</span>
         </div>
       </section>
 
-      <section id="dataset" class="section section-light" aria-labelledby="dataset-title">
+      <!-- ============== 1. MOTIVATION + DATASET ============== -->
+      <section id="motivation" class="section" aria-labelledby="motivation-title">
         <div class="section-heading">
-          <h2 id="dataset-title">The Dataset</h2>
+          <p class="section-eyebrow">Chapter I</p>
+          <h2 id="motivation-title">Why Westeros?</h2>
+        </div>
+
+        <div class="prose">
+          <p class="drop-cap">
+            [PLACEHOLDER COPY] George R. R. Martin's saga is a story
+            about <em>relationships</em>: alliances and betrayals, marriages
+            and murders, oaths kept and broken. That makes it an unusually
+            rich text for network science. Where most fiction has a clear
+            protagonist, Westeros has a tangle of perspectives — and a wiki
+            that has catalogued nearly every name. We use that wiki as raw
+            material to ask: who really holds the story together, and what
+            does the structure of those connections tell us?
+          </p>
           <p>
-            The project starts with character pages, biographies, affiliations,
-            and quote records. The cleaned second pass removes inflated
-            family-tree links so the network is driven by narrative mentions and
-            affiliations rather than genealogy diagrams.
+            [PLACEHOLDER COPY] In this project we build a character network
+            from <em>A Wiki of Ice and Fire</em>, layer in the text of
+            character pages and quotes, and score the emotional charge of
+            relationships with a local language model. The result is a map
+            of the story's social tissue — and the lines along which it
+            bleeds.
           </p>
         </div>
 
-        <div class="metric-grid" aria-live="polite">
+        <div class="section-heading section-heading-tight">
+          <h3>What we have to work with</h3>
+        </div>
+
+        <div class="metric-grid">
           <article class="metric-card">
-            <span class="metric-value" id="metric-characters">...</span>
-            <span class="metric-label">characters</span>
+            <span class="metric-value">3,690</span>
+            <span class="metric-label">named characters</span>
           </article>
           <article class="metric-card">
-            <span class="metric-value" id="metric-links">...</span>
+            <span class="metric-value">23,322</span>
             <span class="metric-label">affiliation links</span>
           </article>
           <article class="metric-card">
-            <span class="metric-value" id="metric-karma">...</span>
-            <span class="metric-label">scored relationships</span>
+            <span class="metric-value">546</span>
+            <span class="metric-label">houses &amp; factions</span>
           </article>
           <article class="metric-card">
-            <span class="metric-value" id="metric-quotes">...</span>
+            <span class="metric-value">4,626</span>
             <span class="metric-label">quote records</span>
           </article>
         </div>
 
-        <div class="split-panel">
-          <div>
-            <h3>Why this network matters</h3>
-            <p>
-              A character's importance is not only about page length or fame.
-              In this project, importance comes from the web of named
-              relationships around them. The hubs are the people whose pages
-              point outward to many other characters.
-            </p>
-          </div>
-          <div class="rank-panel">
-            <div class="panel-title">Most connected characters</div>
-            <div id="degree-bars" class="bar-stack"></div>
-          </div>
+        <div class="prose">
+          <p>
+            Each row in our cleaned dataset
+            (<code>characters_enriched_v3.csv</code>) is one named
+            character scraped from <em>A Wiki of Ice and Fire</em>. For
+            every character we keep their canonical name and ID, their
+            family ties (father, mother, spouse, lover, issue), their
+            primary allegiance, and the list of other characters they
+            are <em>affiliated</em> with — the field that becomes the
+            backbone of the network.
+          </p>
+          <p>
+            81% of characters (2,990 of 3,690) declare at least one
+            allegiance, spread across 546 distinct houses, orders, and
+            factions. House Targaryen is the largest with 215 members,
+            followed by the Night's Watch, the Citadel, House Frey,
+            and House Stark. The full distribution is the long tail you
+            would expect — a handful of dynasties and a fog of
+            one-off retainers.
+          </p>
+          <p>
+            The v3 cleanup is the version we trust for analysis. Family
+            tree edges are kept in their own columns rather than mixed
+            into the affiliation network, so a great-great-grandfather
+            no longer counts as a teammate; only narrative
+            co-mentions do. That single change is what makes the
+            network behave like a story instead of a genealogy chart.
+          </p>
         </div>
       </section>
 
-      <section id="network" class="section section-ink" aria-labelledby="network-title">
+      <!-- ============== 2. TOPOGRAPHY ============== -->
+      <section id="topography" class="section section-alt" aria-labelledby="topography-title">
         <div class="section-heading">
-          <h2 id="network-title">The Story as a Social Map</h2>
-          <p>
-            Each dot is a major character. Lines connect high-degree characters
-            where the cleaned data has a relationship. Color hints at allegiance,
-            while line tone hints at the karma score where one exists.
+          <p class="section-eyebrow">Chapter II</p>
+          <h2 id="topography-title">The Shape of the Realm</h2>
+          <p class="section-lede">
+            [PLACEHOLDER] Before we go looking for stories in the data, we
+            ask what kind of network this even is. A handful of giants and
+            a long tail of footnotes? Or something flatter? We compare the
+            real Westeros network against a randomly-rewired counterpart
+            to see what's distinctive about it.
           </p>
         </div>
 
-        <div class="network-layout">
-          <div class="network-frame">
-            <svg id="main-network" role="img" aria-label="Interactive character relationship network"></svg>
+        <figure class="figure-block">
+          <div class="figure-placeholder">
+            <span class="placeholder-label">Figure 2.1 · placeholder</span>
+            <span class="placeholder-file">figures/topography-degree-distribution.png</span>
+            <span class="placeholder-desc">
+              Degree distribution on log-log axes — the Pareto-style heavy
+              tail. (Lovro)
+            </span>
           </div>
-          <aside class="profile-panel" aria-live="polite">
-            <label for="character-search">Character</label>
-            <div class="search-row">
-              <input
-                id="character-search"
-                list="character-options"
-                autocomplete="off"
-                placeholder="Search a name"
-              />
-              <button id="character-go" class="icon-button" type="button" aria-label="Open character">
-                <span aria-hidden="true">Go</span>
-              </button>
-            </div>
-            <datalist id="character-options"></datalist>
+          <figcaption>
+            [PLACEHOLDER CAPTION] A few characters connect to everyone;
+            most connect to almost no one. The curve hugs a power law more
+            tightly than chance would predict.
+          </figcaption>
+        </figure>
 
-            <div id="character-profile" class="character-profile">
-              <h3>Selecting Tyrion Lannister...</h3>
-            </div>
-          </aside>
+        <figure class="figure-block">
+          <div class="figure-placeholder">
+            <span class="placeholder-label">Figure 2.2 · placeholder</span>
+            <span class="placeholder-file">figures/topography-real-vs-random.png</span>
+            <span class="placeholder-desc">
+              Real Westeros vs. randomized null model — clustering,
+              path length, or whichever comparison Lovro selects.
+            </span>
+          </div>
+          <figcaption>
+            [PLACEHOLDER CAPTION] Compared to a random graph with the same
+            number of nodes and edges, Westeros is more clustered and
+            shorter-path — the shape of a story, not a coincidence.
+          </figcaption>
+        </figure>
+
+        <div class="prose">
+          <p>
+            [PLACEHOLDER COPY] Short narrative paragraph the team writes
+            to bridge from "the dataset looks like X" to "and that means
+            we should look at Y next." Calls forward to the houses
+            section.
+          </p>
         </div>
       </section>
 
-      <section id="karma" class="section section-light" aria-labelledby="karma-title">
+      <!-- ============== 3. HOUSES (Louvain vs true) ============== -->
+      <section id="houses" class="section" aria-labelledby="houses-title">
         <div class="section-heading">
-          <h2 id="karma-title">A Karma Layer</h2>
-          <p>
-            For the top 100 connected characters, a local Gemma model scored
-            how each source character appears to feel toward each target on a
-            1 to 10 scale. The result is not canon truth; it is a machine-read
-            emotional layer that can be challenged, explored, and improved.
+          <p class="section-eyebrow">Chapter III</p>
+          <h2 id="houses-title">Predicting the Houses</h2>
+          <p class="section-lede">
+            [PLACEHOLDER] The map of Westeros divides the realm into
+            houses; the wiki labels every character with one. But could
+            we recover that division from the network alone — without
+            ever reading a banner? We run Louvain community detection on
+            the cleaned graph and compare the algorithm's communities to
+            the true house labels.
           </p>
         </div>
 
-        <div class="karma-grid">
-          <div class="rank-panel">
-            <div class="panel-title">Score distribution</div>
-            <div id="karma-distribution" class="score-bars"></div>
+        <figure class="figure-block">
+          <div class="figure-placeholder">
+            <span class="placeholder-label">Figure 3.1 · placeholder</span>
+            <span class="placeholder-file">figures/houses-louvain-network.png</span>
+            <span class="placeholder-desc">
+              Network coloured by Louvain community. (Uffe)
+            </span>
           </div>
+          <figcaption>
+            [PLACEHOLDER CAPTION] Each colour is a community the algorithm
+            found purely from edges. The clusters fall along familiar
+            fault lines.
+          </figcaption>
+        </figure>
 
-          <div class="rank-panel">
-            <div class="panel-header">
-              <div class="panel-title">Average outgoing karma</div>
-              <div class="segmented-control" role="group" aria-label="Karma ranking mode">
-                <button class="segment active" type="button" data-karma-mode="highest">Highest</button>
-                <button class="segment" type="button" data-karma-mode="lowest">Lowest</button>
-              </div>
+        <div class="figure-row">
+          <figure class="figure-block figure-half">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 3.2 · placeholder</span>
+              <span class="placeholder-file">figures/houses-true-network.png</span>
+              <span class="placeholder-desc">Same network coloured by true house.</span>
             </div>
-            <div id="karma-rankings" class="karma-list"></div>
-          </div>
+            <figcaption>True house labels.</figcaption>
+          </figure>
+          <figure class="figure-block figure-half">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 3.3 · placeholder</span>
+              <span class="placeholder-file">figures/houses-confusion-or-score.png</span>
+              <span class="placeholder-desc">
+                Confusion matrix or NMI / ARI score — whichever Uffe
+                picks.
+              </span>
+            </div>
+            <figcaption>How well the algorithm matches reality.</figcaption>
+          </figure>
+        </div>
+
+        <div class="prose">
+          <p>
+            [PLACEHOLDER COPY] One or two paragraphs reading the result:
+            where Louvain succeeds (Starks, Targaryens), where it stumbles
+            (mixed-allegiance characters, the Night's Watch), and what
+            that tells us about how houses actually work in the text.
+          </p>
         </div>
       </section>
 
-      <section id="text" class="section section-paper" aria-labelledby="text-title">
+      <!-- ============== 4. STORYLINES (TF-IDF wordclouds) ============== -->
+      <section id="storylines" class="section section-alt" aria-labelledby="storylines-title">
         <div class="section-heading">
-          <h2 id="text-title">What the Words Emphasize</h2>
-          <p>
-            The quote corpus gives the network a textual layer. Instead of only
-            seeing who is connected, we can inspect the language that clusters
-            around the story's central characters.
+          <p class="section-eyebrow">Chapter IV</p>
+          <h2 id="storylines-title">Defining the Storylines</h2>
+          <p class="section-lede">
+            [PLACEHOLDER] Network structure tells us who is connected to
+            whom; the text tells us <em>about what</em>. We pull the
+            language that surrounds each major character — biography
+            text, quotes — and use TF-IDF to surface the words that mark
+            their storyline as distinct.
           </p>
         </div>
 
-        <div class="text-layout">
-          <div class="word-panel">
-            <div class="panel-title">Frequent quote terms</div>
-            <div id="word-cloud" class="word-cloud"></div>
-          </div>
-          <div class="quote-panel">
-            <div class="panel-title">Quote search</div>
-            <div class="search-row">
-              <input id="quote-search" type="search" placeholder="Try power, oath, Stark, dragon" />
-              <button id="quote-clear" class="icon-button" type="button">Clear</button>
+        <div class="figure-grid">
+          <figure class="figure-block">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 4.1 · placeholder</span>
+              <span class="placeholder-file">figures/storyline-stark.png</span>
+              <span class="placeholder-desc">TF-IDF wordcloud for the Stark storyline.</span>
             </div>
-            <div id="quote-results" class="quote-results"></div>
-          </div>
+            <figcaption>The Stark vocabulary.</figcaption>
+          </figure>
+          <figure class="figure-block">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 4.2 · placeholder</span>
+              <span class="placeholder-file">figures/storyline-lannister.png</span>
+              <span class="placeholder-desc">TF-IDF wordcloud for the Lannister storyline.</span>
+            </div>
+            <figcaption>The Lannister vocabulary.</figcaption>
+          </figure>
+          <figure class="figure-block">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 4.3 · placeholder</span>
+              <span class="placeholder-file">figures/storyline-targaryen.png</span>
+              <span class="placeholder-desc">TF-IDF wordcloud for the Targaryen storyline.</span>
+            </div>
+            <figcaption>The Targaryen vocabulary.</figcaption>
+          </figure>
+          <figure class="figure-block">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 4.4 · placeholder</span>
+              <span class="placeholder-file">figures/storyline-extra.png</span>
+              <span class="placeholder-desc">Fourth storyline — Night's Watch / Dragons / TBD.</span>
+            </div>
+            <figcaption>A fourth thread.</figcaption>
+          </figure>
+        </div>
+
+        <div class="prose">
+          <p>
+            [PLACEHOLDER COPY] Short reading of the wordclouds: how the
+            language differs between storylines, what each cluster tells
+            us about the themes of that thread (winter and oaths around
+            the Starks; gold and debt around the Lannisters; fire and
+            blood around the Targaryens, etc.).
+          </p>
         </div>
       </section>
 
-      <section id="downloads" class="section section-light" aria-labelledby="downloads-title">
+      <!-- ============== 5. KARMA ============== -->
+      <section id="karma" class="section" aria-labelledby="karma-title">
         <div class="section-heading">
-          <h2 id="downloads-title">Use the Data</h2>
-          <p>
-            The website is the readable story. The notebooks contain the
-            behind-the-scenes scraping, cleaning, network construction, and
-            karma-scoring choices.
+          <p class="section-eyebrow">Chapter V</p>
+          <h2 id="karma-title">The Karma of Conflict</h2>
+          <p class="section-lede">
+            [PLACEHOLDER] A network shows who is connected. The text
+            shows what they talk about. Neither tells us how they
+            <em>feel</em> about one another. For the top 100 most
+            connected characters, we asked a local language model to read
+            the biographies and rate each directed relationship on a
+            one-to-ten karma scale. The result is a map of who fights
+            whom — and a reminder that this is a conflict-driven story.
           </p>
         </div>
 
-        <div class="download-grid" id="download-grid"></div>
+        <figure class="figure-block">
+          <div class="figure-placeholder">
+            <span class="placeholder-label">Figure 5.1 · placeholder</span>
+            <span class="placeholder-file">figures/karma-distribution.png</span>
+            <span class="placeholder-desc">
+              Distribution of karma scores across all scored pairs.
+            </span>
+          </div>
+          <figcaption>
+            [PLACEHOLDER CAPTION] Westeros skews dark — the average
+            relationship is below five, and the mode is contempt.
+          </figcaption>
+        </figure>
+
+        <figure class="figure-block">
+          <div class="figure-placeholder">
+            <span class="placeholder-label">Figure 5.2 · placeholder</span>
+            <span class="placeholder-file">figures/karma-conflict-graph.png</span>
+            <span class="placeholder-desc">
+              Network of the lowest-karma edges — who hates whom.
+            </span>
+          </div>
+          <figcaption>
+            [PLACEHOLDER CAPTION] The skeleton of the saga's conflicts:
+            the lowest-karma edges form their own narrative graph.
+          </figcaption>
+        </figure>
+
+        <div class="figure-row">
+          <figure class="figure-block figure-half">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 5.3 · placeholder</span>
+              <span class="placeholder-file">figures/karma-villains.png</span>
+              <span class="placeholder-desc">Lowest average outgoing karma — the villains.</span>
+            </div>
+            <figcaption>Who sees the worst in everyone.</figcaption>
+          </figure>
+          <figure class="figure-block figure-half">
+            <div class="figure-placeholder">
+              <span class="placeholder-label">Figure 5.4 · placeholder</span>
+              <span class="placeholder-file">figures/karma-saints.png</span>
+              <span class="placeholder-desc">Highest average outgoing karma — the saints.</span>
+            </div>
+            <figcaption>And who, against the odds, sees the best.</figcaption>
+          </figure>
+        </div>
+
+        <div class="prose">
+          <p>
+            [PLACEHOLDER COPY] One or two paragraphs reading the karma
+            results: the story is structured around enmity, not
+            friendship; the average pairwise sentiment is hostile; the
+            characters with high outgoing karma are surprisingly often
+            the ones who die. End with the link to the explainer
+            notebook.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============== DOWNLOADS ============== -->
+      <section id="downloads" class="section section-alt" aria-labelledby="downloads-title">
+        <div class="section-heading">
+          <p class="section-eyebrow">Appendix</p>
+          <h2 id="downloads-title">Take the Data</h2>
+          <p class="section-lede">
+            The website is the readable story. The notebooks are the work
+            behind it — scraping, cleaning, the network construction,
+            the LLM scoring, and every choice we made along the way.
+          </p>
+        </div>
+
+        <div class="download-grid">
+          <article class="download-card">
+            <h3>Cleaned character network</h3>
+            <p>Characters with allegiance and cleaned affiliation links.</p>
+            <a href="characters_enriched_v2.csv" download>Download CSV</a>
+          </article>
+          <article class="download-card">
+            <h3>Karma-scored edges</h3>
+            <p>Source–target pairs among the top 100 with 1–10 karma scores.</p>
+            <a href="karma_edges_v2.csv" download>Download CSV</a>
+          </article>
+          <article class="download-card">
+            <h3>Top 100 hubs</h3>
+            <p>The highest outgoing-degree characters after cleanup.</p>
+            <a href="top100_outgoing_v2.csv" download>Download CSV</a>
+          </article>
+          <article class="download-card">
+            <h3>Quote corpus</h3>
+            <p>Per-character quotes with speaker and recipient IDs where available.</p>
+            <a href="characters_quotes.csv" download>Download CSV</a>
+          </article>
+          <article class="download-card">
+            <h3>Character biographies</h3>
+            <p>Biography text used as context for analysis and karma scoring.</p>
+            <a href="characters_bio.csv" download>Download CSV</a>
+          </article>
+        </div>
 
         <div class="notebook-strip">
           <a
             class="button button-primary"
-            href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/llm.ipynb"
+            href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/explainer.ipynb"
             rel="noreferrer"
           >
-            Open explainer notebook on nbviewer
+            Read the explainer notebook
           </a>
-          <a class="button button-secondary" href="https://github.com/oggefaderen/CompSciProject/raw/main/llm.ipynb">Download notebook</a>
+          <a
+            class="button button-secondary"
+            href="https://github.com/oggefaderen/CompSciProject/raw/main/explainer.ipynb"
+          >
+            Download notebook
+          </a>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <p>
-        Built from the CompSciProject CSV outputs. Data source: A Wiki of Ice
-        and Fire character pages.
+        Built from <em>A Wiki of Ice and Fire</em> character pages.
+        A project for DTU Computational Social Science.
       </p>
-      <a href="#top">Back to top</a>
+      <a href="#top">Back to the top</a>
     </footer>
-
-    <script src="script.js"></script>
   </body>
 </html>
