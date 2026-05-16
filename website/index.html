@@ -260,7 +260,7 @@
 
         <figure class="figure-block">
           <img
-            src="figures/graph_analysis/louvian_plot.png"
+            src="figures/graph_analysis/louvain_plot.png"
             alt="The Westeros affiliation network with each node coloured by the Louvain community it was assigned to, with no access to the wiki's allegiance labels."
           />
           <figcaption>
@@ -366,27 +366,14 @@
           </p>
         </div>
 
-        <figure class="figure-block">
-          <img
-            src="figures/graph_analysis/targaryen_era_split.png"
-            alt="Sub-community structure within House Targaryen, showing how Louvain detects historical-era sub-groups inside a single dynasty."
-          />
-          <figcaption>
-            A case study within the Targaryen super-community. Louvain
-            doesn't only recover allegiances. It also discovers sub-communities
-            along historical fault lines. Targaryens of different eras end
-            up in distinct Louvain communities, even though the wiki labels them
-            all as one allegiance. This is the algorithm finding political memory
-            the affiliation network alone made visible.
-          </figcaption>
-        </figure>
-
         <div class="prose">
           <p>
-            The final takeaway is that community detection does more than
-            recover familiar banners. It finds where the affiliation network
-            agrees with the official labels, where those labels blur, and where
-            a single allegiance contains several historical sub-stories.
+            The final takeaway is that community detection recovers
+            allegiance structure better than chance, but well short of
+            identity. The communities Louvain finds are not "houses"; they
+            are coalitions in which one large allegiance dominates and
+            several smaller ones travel along with it. Communities carry
+            real allegiance signal without being allegiance.
           </p>
         </div>
       </section>
