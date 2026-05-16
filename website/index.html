@@ -90,24 +90,28 @@
           <ol class="research-list">
             <li>
               <strong>Topology.</strong> Does the affiliation network's
-              degree distribution and assortativity look like a real social
-              graph, or could a randomly-rewired network produce the same
-              pattern?
+              <em>degree distribution</em> (how many connections each
+              character has) and <em>assortativity</em> (whether
+              well-connected characters tend to link to other
+              well-connected ones) look like a real social graph, or could
+              a randomly-rewired network produce the same pattern?
             </li>
             <li>
-              <strong>Community structure.</strong> Can a community-detection
-              algorithm recover the allegiance labels from the network alone,
-              without ever reading a banner?
+              <strong>Community structure.</strong> Can a
+              community-detection algorithm — one that groups densely
+              connected nodes — recover the allegiance labels from the
+              network alone, without ever reading a banner?
             </li>
             <li>
               <strong>Vocabulary.</strong> What words distinguish each
-              allegiance's collected biographies and quotes beyond who they know?
+              allegiance's collected biographies and quotes beyond who
+              they know?
             </li>
             <li>
               <strong>Karma.</strong> Score every directed character
-              relationship from 1 (sworn enemy) to 10 (closest bond) with a
-              local language model. Do the resulting "feelings" align with
-              canonical conflicts and loyalties?
+              relationship from 1 (sworn enemy) to 10 (closest bond) with
+              a local language model. Do the resulting "feelings" align
+              with canonical conflicts and loyalties?
             </li>
           </ol>
           <p>
@@ -247,9 +251,10 @@
             The map of Westeros divides the realm into allegiances; the
             wiki labels every character with one. But could we recover
             that division from the network alone — without ever reading
-            a banner? We run Louvain community detection on the cleaned
-            graph and compare the algorithm's communities to the true
-            allegiance labels.
+            a banner? We run <em>Louvain community detection</em> — an
+            algorithm that groups densely connected nodes into communities
+            without any labels — on the cleaned graph and compare its
+            output to the true allegiance labels.
           </p>
         </div>
 
@@ -355,10 +360,12 @@
           <p class="section-lede">
             Network structure tells us who is connected to whom; the text
             tells us <em>about what</em>. We combine biography text and
-            attributed quotes, then use TF-IDF to surface the words that
-            make each character or allegiance distinctive. These are
-            not simply the most common words, but the words that separate
-            one storyline from the others.
+            attributed quotes, then use <em>TF-IDF</em> — a measure that
+            rewards words that are frequent within one document but rare
+            across the others — to surface the words that make each
+            character or allegiance distinctive. These are not simply
+            the most common words, but the words that separate one
+            storyline from the others.
           </p>
         </div>
 
