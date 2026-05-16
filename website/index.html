@@ -29,6 +29,7 @@
         <a href="#allegiances">Allegiances</a>
         <a href="#storylines">Storylines</a>
         <a href="#karma">Karma</a>
+        <a href="#conclusion">Conclusion</a>
         <a href="#downloads">Data</a>
       </nav>
     </header>
@@ -131,7 +132,9 @@
             minutes total).
           </p>
           <p>
-            Four datasets are collected, one per scraper:
+            The project uses five datasets. Four are scraped from the
+            wiki, one per scraper; the fifth, the karma-scored edges, is
+            produced later by the language-model scoring step (Chapter V):
           </p>
           <ul>
             <li>
@@ -156,6 +159,14 @@
               (<code>characters_quotes.csv</code>): every attributed
               quote, with speaker and recipient where the wiki links them.
             </li>
+            <li>
+              <strong>Karma-scored edges</strong>
+              (<code>karma_edges_v3.csv</code>): every directed
+              relationship among the 100 most-connected characters, rated
+              1 (sworn enemy) to 10 (closest bond) by a local language
+              model. This dataset is generated, not scraped, and
+              underpins the karma analysis in Chapter V.
+            </li>
           </ul>
         </div>
 
@@ -173,8 +184,8 @@
             <span class="metric-label">distinct allegiances</span>
           </article>
           <article class="metric-card">
-            <span class="metric-value">~4,600</span>
-            <span class="metric-label">attributed quotes</span>
+            <span class="metric-value">~6&nbsp;MB</span>
+            <span class="metric-label">total dataset size</span>
           </article>
         </div>
 
@@ -345,6 +356,20 @@
           </p>
         </div>
 
+        <div class="prose">
+          <p>
+            How well can Louvain communities predict a character's
+            allegiance? We score the agreement with five standard
+            measures: dominant-label accuracy, the chance-corrected
+            Adjusted Rand Index, Normalised Mutual Information, and
+            homogeneity and completeness (the two ways "community =
+            allegiance" can fail), each compared against a shuffled-label
+            and degree-preserving null. Formulas and the full derivation
+            are in the explainer notebook; the scores are reported with
+            the figure below.
+          </p>
+        </div>
+
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/louvain_plot.png"
@@ -367,15 +392,14 @@
         <div class="figure-row">
           <figure class="figure-block figure-half">
             <img
-              src="figures/graph_analysis/louvian_plot.png"
+              src="figures/graph_analysis/social_affiliation_graph.png"
               alt="The same affiliation network coloured by each character's true allegiance label, for visual comparison with the Louvain communities above."
             />
             <figcaption>
-              The same network coloured by Louvain community, each node
-              assigned its community's majority allegiance. The communities
-              are now far larger (C12 has 523 members, C11 has 444), partly
-              because this view uses the full dataset rather than only the
-              largest houses.
+              The same network, now coloured by each character's allegiance
+              under the majority-allegiance rule. Read against the Louvain
+              view above, it shows where the algorithm's communities line up
+              with the banners and where they cut across them.
             </figcaption>
           </figure>
           <figure class="figure-block figure-half">
@@ -412,6 +436,56 @@
           </figcaption>
         </figure>
 
+        <table class="results-table">
+          <caption>
+            Scored on 2,643 of 3,046 connected characters with a known
+            allegiance (86.8% coverage), across 15 Louvain communities and
+            364 distinct allegiances.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Measure</th>
+              <th scope="col" class="rt-desc">What it measures</th>
+              <th scope="col">Louvain</th>
+              <th scope="col">Shuffled null</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dominant-label accuracy</td>
+              <td class="rt-desc">Share correct when each community is read as its top allegiance</td>
+              <td>0.24</td><td>0.09</td>
+            </tr>
+            <tr>
+              <td>Adjusted Rand Index</td>
+              <td class="rt-desc">Chance-corrected partition agreement (0 random, 1 identical)</td>
+              <td>0.10</td><td>0.00</td>
+            </tr>
+            <tr>
+              <td>Normalised Mutual Information</td>
+              <td class="rt-desc">How much a community reveals about allegiance</td>
+              <td>0.39</td><td>0.14</td>
+            </tr>
+            <tr>
+              <td>Homogeneity</td>
+              <td class="rt-desc">Are communities single-allegiance?</td>
+              <td>0.29</td><td>0.11</td>
+            </tr>
+            <tr>
+              <td>Completeness</td>
+              <td class="rt-desc">Is each allegiance kept within one community?</td>
+              <td>0.60</td><td>0.22</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="prose">
+          <p>
+            Louvain clears the null on every measure, but accuracy and ARI
+            stay low. The takeaways below interpret what this means.
+          </p>
+        </div>
+
         <div class="section-heading section-heading-tight">
           <h3>Takeaways</h3>
         </div>
@@ -432,8 +506,7 @@
               (about 0.29): allegiances tend to stay together, but the
               communities they fall into are <strong>mixed coalitions, not
               pure allegiances</strong>. A few large communities absorb many
-              allegiances, and cross-cutting orders such as the Night's
-              Watch and the Faith blur the boundaries.
+              allegiances.
             </li>
             <li>
               Allegiance is therefore present in the network but is
@@ -457,11 +530,8 @@
             wiki labels them all as one house. This suggests the communities
             partly track historical period rather than dynasty, a temporal
             effect on top of the storyline one. We flag this as a likely
-            driver but did not have time to investigate it fully. Testing it
-            properly would require scraping each character's birth and death
-            years and dropping affiliation edges between characters whose
-            lifetimes never overlap. We leave this for future work.
-          </p>
+            driver but did not have time to investigate it fully. We tried scrapin birth and death year to pinpoint periods.
+            But the project became too massive together with having a very incomplete data. We thus have to put this in futrure work and limitations.
         </div>
       </section>
 
@@ -482,54 +552,234 @@
           </p>
         </div>
 
-        <figure class="figure-block">
-          <img
-            src="figures/word_clouds/main_cr_cloud.png"
-            alt="Side-by-side TF-IDF word clouds for the central characters of A Song of Ice and Fire, each character represented by the words most distinctively associated with their storyline."
-          />
-          <figcaption>
-            The language of the selected main characters. Each cloud is
-            built from biography and attributed quote text, with character
-            names filtered out before TF-IDF scoring. Jon is pulled toward
-            Wall and wildling vocabulary; Daenerys toward Essos, conquest,
-            and dragons; Melisandre toward fire, religion, and Dragonstone.
-            Tyrion's visible <code>duck</code> token is a useful caveat: it
-            comes from Ser Rolly Duckfield's nickname, showing how a repeated
-            companion alias can become distinctive in the text.
-          </figcaption>
-        </figure>
+        <h3 class="subsection-title">The language of allegiances</h3>
+        <p class="prose-note">
+          Select an allegiance. Members are grouped by the
+          majority-allegiance rule, then their pooled biography and quote
+          text is scored with TF-IDF. Houses recover collective identities
+          (northern geography around Stark, Valyrian language around
+          Targaryen); orders and factions recover institutional vocabulary.
+        </p>
 
-        <figure class="figure-block">
-          <img
-            src="figures/word_clouds/house_cloud.png"
-            alt="Grid of TF-IDF word clouds for major allegiances in A Song of Ice and Fire, showing the words most distinctive to each allegiance's collected character pages."
-          />
-          <figcaption>
-            The language of allegiances. Some allegiances are noble houses,
-            such as Stark, Lannister, and Targaryen; others are institutions
-            or factions, such as the Citadel, the Night's Watch, the Faith
-            of the Seven, and Mance Rayder's wildling allegiance. Pooling members
-            reveals collective vocabularies, but also inherited quirks:
-            Lannister's <code>duck</code> token comes mainly from Tyrion's
-            corpus, not from a broader Lannister theme.
-          </figcaption>
-        </figure>
+        <div class="ego-tabs">
+          <div class="ego-tablist" role="tablist" aria-label="Allegiance word clouds">
+            <button class="ego-tab" role="tab" id="wctab-h-1" aria-controls="wcpanel-h-1" aria-selected="true" tabindex="0" type="button">House Targaryen</button>
+            <button class="ego-tab" role="tab" id="wctab-h-2" aria-controls="wcpanel-h-2" aria-selected="false" tabindex="-1" type="button">Night's Watch</button>
+            <button class="ego-tab" role="tab" id="wctab-h-3" aria-controls="wcpanel-h-3" aria-selected="false" tabindex="-1" type="button">Citadel</button>
+            <button class="ego-tab" role="tab" id="wctab-h-4" aria-controls="wcpanel-h-4" aria-selected="false" tabindex="-1" type="button">House Frey</button>
+            <button class="ego-tab" role="tab" id="wctab-h-5" aria-controls="wcpanel-h-5" aria-selected="false" tabindex="-1" type="button">House Stark</button>
+            <button class="ego-tab" role="tab" id="wctab-h-6" aria-controls="wcpanel-h-6" aria-selected="false" tabindex="-1" type="button">House Lannister</button>
+            <button class="ego-tab" role="tab" id="wctab-h-7" aria-controls="wcpanel-h-7" aria-selected="false" tabindex="-1" type="button">Blacks</button>
+            <button class="ego-tab" role="tab" id="wctab-h-8" aria-controls="wcpanel-h-8" aria-selected="false" tabindex="-1" type="button">House Baratheon</button>
+            <button class="ego-tab" role="tab" id="wctab-h-9" aria-controls="wcpanel-h-9" aria-selected="false" tabindex="-1" type="button">Faith of the Seven</button>
+            <button class="ego-tab" role="tab" id="wctab-h-10" aria-controls="wcpanel-h-10" aria-selected="false" tabindex="-1" type="button">Kingsguard</button>
+            <button class="ego-tab" role="tab" id="wctab-h-11" aria-controls="wcpanel-h-11" aria-selected="false" tabindex="-1" type="button">House Greyjoy</button>
+            <button class="ego-tab" role="tab" id="wctab-h-12" aria-controls="wcpanel-h-12" aria-selected="false" tabindex="-1" type="button">House Tyrell</button>
+            <button class="ego-tab" role="tab" id="wctab-h-13" aria-controls="wcpanel-h-13" aria-selected="false" tabindex="-1" type="button">Mance Rayder</button>
+            <button class="ego-tab" role="tab" id="wctab-h-14" aria-controls="wcpanel-h-14" aria-selected="false" tabindex="-1" type="button">House Martell</button>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-1" aria-labelledby="wctab-h-1" tabindex="0">
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_targaryen.png" alt="TF-IDF word cloud for House Targaryen." />
+              <figcaption><strong>House Targaryen</strong><span>Dragons, fire, and Valyrian vocabulary dominate, the clearest single-house lexical fingerprint in the set.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-2" aria-labelledby="wctab-h-2" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_night_s_watch.png" alt="TF-IDF word cloud for the Night's Watch." />
+              <figcaption><strong>Night's Watch</strong><span>Wall, vows, and wildling terms: an order defined by its post and its enemies, not a bloodline.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-3" aria-labelledby="wctab-h-3" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_citadel.png" alt="TF-IDF word cloud for the Citadel." />
+              <figcaption><strong>Citadel</strong><span>Maester vocabulary (archmaester, conclave, ravenry) is distinctive, though book and source terms are a documented ambiguity, partly real scholarly language, partly wiki-source metadata.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-4" aria-labelledby="wctab-h-4" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_frey.png" alt="TF-IDF word cloud for House Frey." />
+              <figcaption><strong>House Frey</strong><span>The Twins, the Crossing, and a crowd of Freys; the Red Wedding context colours the whole group.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-5" aria-labelledby="wctab-h-5" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_stark.png" alt="TF-IDF word cloud for House Stark." />
+              <figcaption><strong>House Stark</strong><span>Northern geography, winter, and direwolf imagery, a tightly coherent regional vocabulary.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-6" aria-labelledby="wctab-h-6" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_lannister.png" alt="TF-IDF word cloud for House Lannister." />
+              <figcaption><strong>House Lannister</strong><span>Gold, debt, and the Rock, but the visible duck token is skew from Tyrion's quotes, not a Lannister theme (see the caveat above).</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-7" aria-labelledby="wctab-h-7" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_blacks.png" alt="TF-IDF word cloud for the Blacks faction." />
+              <figcaption><strong>Blacks</strong><span>Dance-of-the-Dragons vocabulary: claimants, dragonriders, and the civil war that defines the faction.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-8" aria-labelledby="wctab-h-8" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_baratheon.png" alt="TF-IDF word cloud for House Baratheon." />
+              <figcaption><strong>House Baratheon</strong><span>Storm's End, the stag, and rebellion-era terms, the house framed by Robert's war.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-9" aria-labelledby="wctab-h-9" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_faith_of_the_seven.png" alt="TF-IDF word cloud for the Faith of the Seven." />
+              <figcaption><strong>Faith of the Seven</strong><span>Devotional vocabulary, the Seven, septons, and sparrows, an institution recovered through its religious language.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-10" aria-labelledby="wctab-h-10" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_kingsguard.png" alt="TF-IDF word cloud for the Kingsguard." />
+              <figcaption><strong>Kingsguard</strong><span>White cloaks, sworn brothers, and oath language, an order defined by its vow rather than a region.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-11" aria-labelledby="wctab-h-11" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_greyjoy.png" alt="TF-IDF word cloud for House Greyjoy." />
+              <figcaption><strong>House Greyjoy</strong><span>Islands, seafaring, and the iron price, a maritime vocabulary distinct from every mainland house.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-12" aria-labelledby="wctab-h-12" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_tyrell.png" alt="TF-IDF word cloud for House Tyrell." />
+              <figcaption><strong>House Tyrell</strong><span>Highgarden, the Reach, and chivalric abundance, the most courtly lexical profile.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-13" aria-labelledby="wctab-h-13" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_mance_rayder.png" alt="TF-IDF word cloud for Mance Rayder's wildlings." />
+              <figcaption><strong>Mance Rayder</strong><span>Free-folk and beyond-the-Wall vocabulary, grouped as a faction because the data treats Mance's host like an allegiance.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-h-14" aria-labelledby="wctab-h-14" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/house_house_martell.png" alt="TF-IDF word cloud for House Martell." />
+              <figcaption><strong>House Martell</strong><span>Dorne, sun and spear, and vengeance terms; a small but lexically sharp southern profile.</span></figcaption>
+            </figure>
+          </div>
+        </div>
 
+        <h3 class="subsection-title">The language of characters</h3>
+        <p class="prose-note">
+          Select a character. Each cloud is built from that character's
+          biography and attributed quotes, with character names filtered
+          out first. One caveat on the method: because TF-IDF counts term
+          frequency within a document, a word repeated inside a single
+          quote can dominate a cloud. Tyrion's loud <code>duck</code> is
+          exactly this, it comes from one quote where he says it several
+          times, not from a recurring theme.
+        </p>
+
+        <div class="ego-tabs">
+          <div class="ego-tablist" role="tablist" aria-label="Character word clouds">
+            <button class="ego-tab" role="tab" id="wctab-c-1" aria-controls="wcpanel-c-1" aria-selected="true" tabindex="0" type="button">Jon Snow</button>
+            <button class="ego-tab" role="tab" id="wctab-c-2" aria-controls="wcpanel-c-2" aria-selected="false" tabindex="-1" type="button">Cersei Lannister</button>
+            <button class="ego-tab" role="tab" id="wctab-c-3" aria-controls="wcpanel-c-3" aria-selected="false" tabindex="-1" type="button">Daenerys Targaryen</button>
+            <button class="ego-tab" role="tab" id="wctab-c-4" aria-controls="wcpanel-c-4" aria-selected="false" tabindex="-1" type="button">Tyrion Lannister</button>
+            <button class="ego-tab" role="tab" id="wctab-c-5" aria-controls="wcpanel-c-5" aria-selected="false" tabindex="-1" type="button">Petyr Baelish</button>
+            <button class="ego-tab" role="tab" id="wctab-c-6" aria-controls="wcpanel-c-6" aria-selected="false" tabindex="-1" type="button">Theon Greyjoy</button>
+            <button class="ego-tab" role="tab" id="wctab-c-7" aria-controls="wcpanel-c-7" aria-selected="false" tabindex="-1" type="button">Melisandre</button>
+            <button class="ego-tab" role="tab" id="wctab-c-8" aria-controls="wcpanel-c-8" aria-selected="false" tabindex="-1" type="button">Walder Frey</button>
+            <button class="ego-tab" role="tab" id="wctab-c-9" aria-controls="wcpanel-c-9" aria-selected="false" tabindex="-1" type="button">Davos Seaworth</button>
+            <button class="ego-tab" role="tab" id="wctab-c-10" aria-controls="wcpanel-c-10" aria-selected="false" tabindex="-1" type="button">Robb Stark</button>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-1" aria-labelledby="wctab-c-1" tabindex="0">
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_jon_snow.png" alt="TF-IDF word cloud for Jon Snow." />
+              <figcaption><strong>Jon Snow</strong><span>Wall, crows, vows, and wildlings (giants, Thenn): his arc is almost entirely a frontier vocabulary.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-2" aria-labelledby="wctab-c-2" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_cersei_lannister.png" alt="TF-IDF word cloud for Cersei Lannister." />
+              <figcaption><strong>Cersei Lannister</strong><span>King's Landing court, regency, and prophecy vocabulary; a power-and-paranoia profile centred on the capital.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-3" aria-labelledby="wctab-c-3" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_daenerys_targaryen.png" alt="TF-IDF word cloud for Daenerys Targaryen." />
+              <figcaption><strong>Daenerys Targaryen</strong><span>Pure Essos and conquest: khalasar, Meereen, Yunkai, Drogon, Dothraki, the most location-anchored cloud here.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-4" aria-labelledby="wctab-c-4" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_tyrion_lannister.png" alt="TF-IDF word cloud for Tyrion Lannister." />
+              <figcaption><strong>Tyrion Lannister</strong><span>His later travel arc (Griff, Volantis, imp) dominates; the loud duck token is a single-quote artifact, not a real theme.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-5" aria-labelledby="wctab-c-5" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_petyr_baelish.png" alt="TF-IDF word cloud for Petyr Baelish." />
+              <figcaption><strong>Petyr Baelish</strong><span>Surfaces as littlefinger with Vale-protector vocabulary, capturing his late-series maneuvering.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-6" aria-labelledby="wctab-c-6" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_theon_greyjoy.png" alt="TF-IDF word cloud for Theon Greyjoy." />
+              <figcaption><strong>Theon Greyjoy</strong><span>Split between Greyjoy iron-islands identity and Winterfell terms (Bran), the lexical trace of his betrayal arc.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-7" aria-labelledby="wctab-c-7" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_melisandre.png" alt="TF-IDF word cloud for Melisandre." />
+              <figcaption><strong>Melisandre</strong><span>Religious and mystical (sacrifice, flames, Asshai, shadowbinder), with Dragonstone tying her to Stannis.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-8" aria-labelledby="wctab-c-8" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_walder_frey.png" alt="TF-IDF word cloud for Walder Frey." />
+              <figcaption><strong>Walder Frey</strong><span>Verbal tics and Red Wedding context (heh, grandsons, muttonhead): the cloud captures his voice more than his politics.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-9" aria-labelledby="wctab-c-9" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_davos_seaworth.png" alt="TF-IDF word cloud for Davos Seaworth." />
+              <figcaption><strong>Davos Seaworth</strong><span>Smuggler and maritime identity (onion, fleet, pirate) layered with Stannis-linked conflict terms.</span></figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="wcpanel-c-10" aria-labelledby="wctab-c-10" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/word_clouds/char_robb_stark.png" alt="TF-IDF word cloud for Robb Stark." />
+              <figcaption><strong>Robb Stark</strong><span>Young-Wolf war vocabulary and Stark-family/Winterfell terms (Bran), overlapping Theon's corpus.</span></figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Takeaways</h3>
         <div class="prose">
+          <ul>
+            <li>
+              House vocabularies are anchored in <strong>geography</strong>:
+              the most distinctive words are seats and regions (Winterfell
+              for Stark, Riverrun for Tully, Casterly Rock for Lannister).
+              In text, a house reads as a place.
+            </li>
+            <li>
+              The text recovers <strong>intertwined storylines</strong>,
+              not just isolated houses. Wildling vocabulary dominates both
+              the Night's Watch and Mance Rayder, the two sides of one Wall
+              narrative, so the text layer agrees with the network that
+              these belong together.
+            </li>
+            <li>
+              House Targaryen <strong>diverges from the expected
+              language</strong>: its cloud is full of Daenerys-specific
+              Essos terms while generic words such as "dragon" are largely
+              absent. TF-IDF suppresses words shared across the many
+              dragon-linked groups, and the pooled Targaryen text is
+              dominated by Daenerys' unusually large and uniqe corpus compared to the other houses.
+            </li>
+          </ul>
           <p>
-            The word clouds add a text layer to the network analysis. The
-            network shows where characters sit socially; TF-IDF shows the
-            story-world vocabulary that surrounds them. Character clouds tend
-            to recover local arcs and settings, while allegiance clouds recover
-            broader collective identities: northern geography around Stark,
-            dragons and Valyrian language around Targaryen, seafaring around
-            Greyjoy, and institutional vocabulary around the Citadel.
-          </p>
-          <p>
-            The clouds should be read as visual summaries, not exact ranked
-            evidence. The explainer notebook contains the underlying TF-IDF
-            tables and the full discussion of limitations, including wiki
-            source-section language, adaptation wording, and nickname leakage.
+            The clouds are visual summaries, not exact ranked evidence.
+            The explainer notebook holds the underlying TF-IDF tables and
+            the full limitations discussion (wiki source-section language,
+            adaptation wording, nickname leakage).
           </p>
         </div>
       </section>
@@ -579,8 +829,61 @@
           this placeholder with a real <figure> block once it's exported.
         -->
 
+        <h3 class="subsection-title">Karma by house</h3>
+        <p class="prose-note">
+          The same top-100 karma, now grouped by each character's majority
+          house. Toggle between the network laid out as house wedges and
+          the per-house score averages.
+        </p>
+
+        <div class="ego-tabs">
+          <div class="ego-tablist" role="tablist" aria-label="Karma by house">
+            <button class="ego-tab" role="tab" id="hktab-1" aria-controls="hkpanel-1" aria-selected="true" tabindex="0" type="button">Grouped by house</button>
+            <button class="ego-tab" role="tab" id="hktab-2" aria-controls="hkpanel-2" aria-selected="false" tabindex="-1" type="button">Per-house scores</button>
+          </div>
+
+          <div class="ego-tabpanel" role="tabpanel" id="hkpanel-1" aria-labelledby="hktab-1" tabindex="0">
+            <figure class="figure-block">
+              <img
+                src="figures/karma/karma_grouped_by_affiliation.png"
+                alt="Two ring graphs of the top-100 characters arranged into house wedges. Left shows only karma edges among the 100, right shows all their outgoing karma. The interior is dominated by crimson hostile chords crossing between houses."
+              />
+              <figcaption>
+                Characters are clustered into house wedges, so any chord
+                crossing the ring is a cross-house feeling. The striking
+                thing is how little legible house-versus-house structure
+                there is: the interior is so saturated with crimson that no
+                clean rivalry pattern stands out. We cannot really learn
+                much about specific inter-house conflict from this, because
+                it is simply dominated by conflict everywhere. The enmity in
+                the saga is diffuse, not organised into tidy house feuds.
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="hkpanel-2" aria-labelledby="hktab-2" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img
+                src="figures/karma/karma_per_house_scores.png"
+                alt="Grouped bar chart of average internal versus external karma per house, with an overall outgoing line. Almost every bar sits below the neutral score of 5."
+              />
+              <figcaption>
+                Average karma each house gives out, split into internal
+                (toward its own members) and external (toward everyone
+                else). Almost every bar sits below the neutral line, even
+                toward kin: this is a wary world. But the internal scores
+                clearly separate the houses. Some are internally very
+                strong, the Starks and Freys score high among their own,
+                while others carry heavy internal conflict. This aligns very
+                well with the books, where Starks strong loyalty while they greyjoys are defined by internal conflict.
+                
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
         <h3 class="subsection-title">Ten points of view</h3>
         <p class="prose-note">
+          It's hard getting a clear story from the houses, we have thus made plots for individual characters to better understand their stories. <br/>
           Select a character to see their outgoing karma: how they rate
           everyone around them. Red edges mark enemy scores, grey neutral,
           green friend; thicker lines sit farther from the neutral middle.
@@ -701,6 +1004,90 @@
         -->
       </section>
 
+      <!-- ============== 6. CONCLUSION ============== -->
+      <section id="conclusion" class="section" aria-labelledby="conclusion-title">
+        <div class="section-heading">
+          <p class="section-eyebrow">Chapter VI</p>
+          <h2 id="conclusion-title">Conclusion</h2>
+          <p class="section-lede">
+            We set out to ask whether the structure of Westeros could be
+            read from data alone, without opening a single book. The
+            answer is a qualified yes: the methods recover the
+            <em>shape</em> of the story and its conflicts, but not a
+            clean copy of its banners.
+          </p>
+        </div>
+
+        <div class="prose">
+          <p>
+            The central question was whether computational social science
+            methods, on their own, could infer the allegiances,
+            conflicts, and defining characteristics of Westeros. Each
+            chapter answers one part of it.
+          </p>
+          <ul>
+            <li>
+              <strong>The network is a story, not noise.</strong> The
+              affiliation graph is heavy-tailed and weakly disassortative,
+              with allegiance homophily that sits clearly above a
+              degree-preserving null yet well below a clannish ideal.
+              Every effect we report survives a configuration-model
+              baseline, so the structure is genuine social organisation,
+              not an artefact of the degree sequence.
+            </li>
+            <li>
+              <strong>Communities carry allegiance, but are not
+              allegiances.</strong> Louvain beats every null on all five
+              measures, yet dominant-label accuracy stays near 0.24 and
+              the chance-corrected Adjusted Rand Index near 0.10.
+              Completeness (about 0.60) far exceeds homogeneity (about
+              0.29): allegiances tend to stay together, but the
+              communities they fall into are mixed coalitions built around
+              shared storylines, not pure houses.
+            </li>
+            <li>
+              <strong>Vocabulary recovers identity as place.</strong>
+              TF-IDF on biographies and quotes turns each house into its
+              geography (Winterfell for Stark, the Wall for the Night's
+              Watch), and recovers intertwined arcs that the network also
+              groups together. The text layer and the network layer agree
+              on the same coalitions.
+            </li>
+            <li>
+              <strong>The saga runs on enmity.</strong> Across 5,159
+              language-model-scored relationships, hostile ratings
+              outnumber warm ones by roughly 2.7 to 1. A method that never
+              read the plot still recovers a world organised around
+              conflict.
+            </li>
+          </ul>
+          <p>
+            Taken together, the layers converge on one finding: Westeros
+            is organised by <strong>shared storyline</strong> more than by
+            the banner a character flies. Allegiance and conflict are
+            genuinely present in the data and recoverable well above
+            chance, but they are a signal carried by the structure rather
+            than its organising unit. We can infer the shape of the
+            realm and the fault lines that run through it; we cannot
+            cleanly reconstruct its houses.
+          </p>
+          <p>
+            <strong>Limitations.</strong> The network collapses thousands
+            of years of in-universe history into one static graph, so a
+            single allegiance can span eras and land in different
+            communities; allegiance labels are themselves incomplete and
+            noisy; TF-IDF clouds can be skewed by a single repeated quote;
+            and the karma layer covers only the 100 most-connected
+            characters and inherits the model's neutral hedge. None of
+            these change the direction of the results, but they bound how
+            literally the numbers should be read. Because every subject is
+            fictional and every page public, the project raises no privacy
+            concerns, and every figure here is reproducible from the
+            notebook below.
+          </p>
+        </div>
+      </section>
+
       <!-- ============== DOWNLOADS ============== -->
       <section id="downloads" class="section section-alt" aria-labelledby="downloads-title">
         <div class="section-heading">
@@ -802,43 +1189,46 @@
         for (const section of map.keys()) observer.observe(section);
       })();
 
-      // Accessible tabs for the karma ego networks.
+      // Accessible tabs (karma ego networks + word cloud groups).
       (function () {
-        const tablist = document.querySelector(".ego-tablist");
-        if (!tablist) return;
-        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
-        const panels = tabs.map((t) =>
-          document.getElementById(t.getAttribute("aria-controls"))
-        );
+        const tablists = document.querySelectorAll(".ego-tablist");
+        if (!tablists.length) return;
 
-        function select(idx, focus) {
-          tabs.forEach((tab, i) => {
-            const sel = i === idx;
-            tab.setAttribute("aria-selected", sel ? "true" : "false");
-            tab.tabIndex = sel ? 0 : -1;
-            if (panels[i]) panels[i].hidden = !sel;
+        tablists.forEach((tablist) => {
+          const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+          const panels = tabs.map((t) =>
+            document.getElementById(t.getAttribute("aria-controls"))
+          );
+
+          function select(idx, focus) {
+            tabs.forEach((tab, i) => {
+              const sel = i === idx;
+              tab.setAttribute("aria-selected", sel ? "true" : "false");
+              tab.tabIndex = sel ? 0 : -1;
+              if (panels[i]) panels[i].hidden = !sel;
+            });
+            if (focus) tabs[idx].focus();
+          }
+
+          tablist.addEventListener("click", (e) => {
+            const tab = e.target.closest('[role="tab"]');
+            if (tab) select(tabs.indexOf(tab), false);
           });
-          if (focus) tabs[idx].focus();
-        }
 
-        tablist.addEventListener("click", (e) => {
-          const tab = e.target.closest('[role="tab"]');
-          if (tab) select(tabs.indexOf(tab), false);
-        });
-
-        tablist.addEventListener("keydown", (e) => {
-          const current = tabs.indexOf(document.activeElement);
-          if (current === -1) return;
-          let next = null;
-          if (e.key === "ArrowRight" || e.key === "ArrowDown")
-            next = (current + 1) % tabs.length;
-          else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
-            next = (current - 1 + tabs.length) % tabs.length;
-          else if (e.key === "Home") next = 0;
-          else if (e.key === "End") next = tabs.length - 1;
-          if (next === null) return;
-          e.preventDefault();
-          select(next, true);
+          tablist.addEventListener("keydown", (e) => {
+            const current = tabs.indexOf(document.activeElement);
+            if (current === -1) return;
+            let next = null;
+            if (e.key === "ArrowRight" || e.key === "ArrowDown")
+              next = (current + 1) % tabs.length;
+            else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+              next = (current - 1 + tabs.length) % tabs.length;
+            else if (e.key === "Home") next = 0;
+            else if (e.key === "End") next = tabs.length - 1;
+            if (next === null) return;
+            e.preventDefault();
+            select(next, true);
+          });
         });
       })();
     </script>
