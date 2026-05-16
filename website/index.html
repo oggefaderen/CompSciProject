@@ -25,7 +25,7 @@
       </a>
       <nav class="nav-links" aria-label="Page sections">
         <a href="#motivation">Motivation</a>
-        <a href="#topography">Topography</a>
+        <a href="#network-structure">Network Structure</a>
         <a href="#allegiances">Allegiances</a>
         <a href="#storylines">Storylines</a>
         <a href="#karma">Karma</a>
@@ -96,9 +96,10 @@
               a randomly-rewired network produce the same pattern?
             </li>
             <li>
-              <strong>Louvian Detection</strong> Can a
-              community-detection algorithm recover the allegiance labels from the
-              network alone, if not what are then then some defining characteristics of the network?
+              <strong>Louvain Detection.</strong> Can a
+              community-detection algorithm recover the allegiance labels
+              from the network alone? If not, what are the defining
+              characteristics of the network?
             </li>
             <li>
               <strong>Vocabulary.</strong> Can we infer main characteristics of the main houses storylines through TF-IDF, and what does it tell about the story?
@@ -246,11 +247,11 @@
         </div>
       </section>
 
-      <!-- ============== 2. TOPOGRAPHY ============== -->
-      <section id="topography" class="section section-alt" aria-labelledby="topography-title">
+      <!-- ============== 2. NETWORK STRUCTURE ============== -->
+      <section id="network-structure" class="section section-alt" aria-labelledby="network-structure-title">
         <div class="section-heading">
           <p class="section-eyebrow">Chapter II</p>
-          <h2 id="topography-title">The Shape of the Realm</h2>
+          <h2 id="network-structure-title">The Shape of the Network</h2>
           <p class="section-lede">
             Before searching for stories in the data, we ask what kind of
             network this is. We test its structure against two random
@@ -530,8 +531,11 @@
             wiki labels them all as one house. This suggests the communities
             partly track historical period rather than dynasty, a temporal
             effect on top of the storyline one. We flag this as a likely
-            driver but did not have time to investigate it fully. We tried scrapin birth and death year to pinpoint periods.
-            But the project became too massive together with having a very incomplete data. We thus have to put this in futrure work and limitations.
+            driver but did not have time to investigate it fully. We tried
+            scraping birth and death years to pinpoint periods, but the
+            effort grew too large and the data was too incomplete, so we
+            leave it to future work and list it among the limitations.
+          </p>
         </div>
       </section>
 
@@ -823,12 +827,6 @@
           </figcaption>
         </figure>
 
-        <!--
-          TODO(team): Figure 5.2 is the lowest-karma conflict graph.
-          Drop the rendered figure into figures/karma_network/ and replace
-          this placeholder with a real <figure> block once it's exported.
-        -->
-
         <h3 class="subsection-title">Karma by house</h3>
         <p class="prose-note">
           The same top-100 karma, now grouped by each character's majority
@@ -995,13 +993,21 @@
           </div>
         </div>
 
-        <!--
-          TODO(team): closing interpretation paragraph(s). Read the karma
-          results, the saga is structured around enmity rather than
-          friendship; mean pairwise sentiment is hostile; the highest
-          outgoing-karma characters disproportionately die. End with a
-          pointer to the explainer notebook.
-        -->
+        <div class="prose">
+          <p>
+            Taken together, the karma layer tells a consistent story: this
+            is a saga organised around enmity rather than friendship.
+            Hostile relationships outnumber warm ones by roughly 2.7 to 1,
+            most houses sit below the neutral line even toward their own,
+            and the strong-feeling network is a dense web of crimson that
+            no tidy structure of house-versus-house rivalry cuts through.
+            The clearest signal is internal: a few houses (the Starks, the
+            Freys) are tightly bonded among their own while others are
+            riven by internal conflict, which tracks the books closely.
+            The full scoring method, the prompt, and the per-character
+            tables are in the explainer notebook.
+          </p>
+        </div>
       </section>
 
       <!-- ============== 6. CONCLUSION ============== -->
@@ -1131,7 +1137,7 @@
         <div class="notebook-strip">
           <a
             class="button button-primary"
-            href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/explainer.ipynb"
+            href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/explainer/main_explainer.ipynb"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -1139,7 +1145,7 @@
           </a>
           <a
             class="button button-secondary"
-            href="https://github.com/oggefaderen/CompSciProject/raw/main/explainer.ipynb"
+            href="https://github.com/oggefaderen/CompSciProject/raw/main/explainer/main_explainer.ipynb"
             target="_blank"
             rel="noopener noreferrer"
           >
