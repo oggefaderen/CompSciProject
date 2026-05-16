@@ -67,22 +67,54 @@
 
         <div class="prose">
           <p class="drop-cap">
-            [PLACEHOLDER COPY] George R. R. Martin's saga is a story
-            about <em>relationships</em>: alliances and betrayals, marriages
-            and murders, oaths kept and broken. That makes it an unusually
-            rich text for network science. Where most fiction has a clear
+            George R. R. Martin's saga is a story about
+            <em>relationships</em>: alliances and betrayals, marriages and
+            murders, oaths kept and broken. That makes it an unusually rich
+            text for network science. Where most fiction has a clear
             protagonist, Westeros has a tangle of perspectives — and a wiki
-            that has catalogued nearly every name. We use that wiki as raw
-            material to ask: who really holds the story together, and what
-            does the structure of those connections tell us?
+            that has catalogued nearly every name.
           </p>
           <p>
-            [PLACEHOLDER COPY] In this project we build a character network
-            from <em>A Wiki of Ice and Fire</em>, layer in the text of
-            character pages and quotes, and score the emotional charge of
-            relationships with a local language model. The result is a map
-            of the story's social tissue — and the lines along which it
-            bleeds.
+            The central question of this project is:
+          </p>
+          <p class="research-question">
+            <em>Can we infer allegiances, conflicts, and defining
+            characteristics for the houses of Westeros from computational
+            social science methods alone — without reading the books?</em>
+          </p>
+          <p>
+            Four sub-questions structure the analysis, one per chapter that
+            follows:
+          </p>
+          <ol class="research-list">
+            <li>
+              <strong>Topology.</strong> Does the affiliation network's
+              degree distribution and assortativity look like a real social
+              graph, or could a randomly-rewired network produce the same
+              pattern?
+            </li>
+            <li>
+              <strong>Community structure.</strong> Can a community-detection
+              algorithm recover the house labels from the network alone,
+              without ever reading a banner?
+            </li>
+            <li>
+              <strong>Vocabulary.</strong> What words distinguish each
+              house's collected biographies and quotes beyond who they know?
+            </li>
+            <li>
+              <strong>Karma.</strong> Score every directed character
+              relationship from 1 (sworn enemy) to 10 (closest bond) with a
+              local language model. Do the resulting "feelings" align with
+              canonical conflicts and loyalties?
+            </li>
+          </ol>
+          <p>
+            Fictional networks make a useful sandbox: we have stable domain
+            knowledge, the data is open and reproducible, and the failures —
+            when a method gets something obviously wrong — are easy to spot.
+            The project is as much about <em>what computational social
+            science methods can and cannot do</em> as it is about Westeros.
           </p>
         </div>
 
@@ -225,41 +257,90 @@
         </div>
 
         <figure class="figure-block">
-          <div class="figure-placeholder">
-            <span class="placeholder-label">Figure 3.1 · placeholder</span>
-            <span class="placeholder-file">figures/houses-louvain-network.png</span>
-            <span class="placeholder-desc">
-              Network coloured by Louvain community. (Uffe)
-            </span>
-          </div>
+          <img
+            src="figures/graph_analysis/louvian_plot.png"
+            alt="The Westeros affiliation network with each node coloured by the Louvain community it was assigned to, with no access to the wiki's house labels."
+          />
           <figcaption>
-            [PLACEHOLDER CAPTION] Each colour is a community the algorithm
-            found purely from edges. The clusters fall along familiar
-            fault lines.
+            Louvain community detection applied to the cleaned affiliation
+            network. Each colour is a community the algorithm found purely
+            from edge structure, without ever reading a banner. The visual
+            question — and the one the next panels measure — is how closely
+            those algorithmic communities align with the houses readers
+            already know.
           </figcaption>
         </figure>
 
         <div class="figure-row">
           <figure class="figure-block figure-half">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 3.2 · placeholder</span>
-              <span class="placeholder-file">figures/houses-true-network.png</span>
-              <span class="placeholder-desc">Same network coloured by true house.</span>
-            </div>
-            <figcaption>True house labels.</figcaption>
+            <img
+              src="figures/graph_analysis/social_affiliation_graph.png"
+              alt="The same affiliation network coloured by each character's true house label, for visual comparison with the Louvain communities above."
+            />
+            <figcaption>
+              The same network coloured by ground-truth house labels.
+              Comparing this against the Louvain panel above shows where
+              the algorithm aligns with canon and where it splits or merges
+              house boundaries.
+            </figcaption>
           </figure>
           <figure class="figure-block figure-half">
-            <div class="figure-placeholder">
-              <span class="placeholder-label">Figure 3.3 · placeholder</span>
-              <span class="placeholder-file">figures/houses-confusion-or-score.png</span>
-              <span class="placeholder-desc">
-                Confusion matrix or NMI / ARI score — whichever Uffe
-                picks.
-              </span>
-            </div>
-            <figcaption>How well the algorithm matches reality.</figcaption>
+            <img
+              src="figures/graph_analysis/community_purity_homogeneity.png"
+              alt="Quantitative measures of community quality: purity and homogeneity scores comparing Louvain communities against the true house labels."
+            />
+            <figcaption>
+              Two quality measures. Purity asks how dominated each Louvain
+              community is by its largest house; homogeneity asks how mixed
+              the communities are overall. High values on both indicate the
+              algorithm recovered the house structure.
+            </figcaption>
           </figure>
         </div>
+
+        <figure class="figure-block">
+          <img
+            src="figures/graph_analysis/group_modal_community_completeness.png"
+            alt="Per-house completeness chart showing what fraction of each house's members land in its modal Louvain community."
+          />
+          <figcaption>
+            Per-house completeness: of all members of a given house, what
+            fraction land in that house's largest Louvain community. High
+            completeness means the house stays intact under community
+            detection; low completeness means the algorithm splits the
+            house across multiple communities.
+          </figcaption>
+        </figure>
+
+        <figure class="figure-block">
+          <img
+            src="figures/graph_analysis/allegiance_prediction_vs_null.png"
+            alt="Comparison of the Louvain-to-house prediction quality against the distribution from a configuration-model null."
+          />
+          <figcaption>
+            Validation against a null model. How does the
+            Louvain–house alignment compare to what a randomly-rewired
+            network with the same degree sequence would produce? A
+            real-network score well above the null distribution is evidence
+            that the network's structure genuinely encodes house affiliation,
+            beyond what edge density alone could explain.
+          </figcaption>
+        </figure>
+
+        <figure class="figure-block">
+          <img
+            src="figures/graph_analysis/targaryen_era_split.png"
+            alt="Sub-community structure within House Targaryen, showing how Louvain detects historical-era sub-groups inside a single dynasty."
+          />
+          <figcaption>
+            A case study within the Targaryen super-community. Louvain
+            doesn't only recover houses — it also discovers sub-communities
+            along historical fault lines. Targaryens of different eras end
+            up in distinct Louvain groups, even though the wiki labels them
+            all as one house. This is the algorithm finding political memory
+            the affiliation network alone made visible.
+          </figcaption>
+        </figure>
 
         <div class="prose">
           <p>
