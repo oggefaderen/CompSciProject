@@ -264,11 +264,12 @@
           <p class="section-eyebrow">Chapter IV</p>
           <h2 id="storylines-title">Defining the Storylines</h2>
           <p class="section-lede">
-            [PLACEHOLDER] Network structure tells us who is connected to
-            whom; the text tells us <em>about what</em>. We pull the
-            language that surrounds each major character — biography
-            text, quotes — and use TF-IDF to surface the words that mark
-            their storyline as distinct.
+            Network structure tells us who is connected to whom; the text
+            tells us <em>about what</em>. We combine biography text and
+            attributed quotes, then use TF-IDF to surface the words that
+            make each character or allegiance group distinctive. These are
+            not simply the most common words, but the words that separate
+            one storyline from the others.
           </p>
         </div>
 
@@ -278,33 +279,48 @@
             alt="Side-by-side TF-IDF word clouds for the central characters of A Song of Ice and Fire, each character represented by the words most distinctively associated with their storyline."
           />
           <figcaption>
-            [PLACEHOLDER CAPTION] The language of the main characters.
-            Each cloud is built from biography and quote text using
-            TF-IDF, so the words shown are the ones that single this
-            character out — not the ones they share with everyone else.
+            The language of the selected main characters. Each cloud is
+            built from biography and attributed quote text, with character
+            names filtered out before TF-IDF scoring. Jon is pulled toward
+            Wall and wildling vocabulary; Daenerys toward Essos, conquest,
+            and dragons; Melisandre toward fire, religion, and Dragonstone.
+            Tyrion's visible <code>duck</code> token is a useful caveat: it
+            comes from Ser Rolly Duckfield's nickname, showing how a repeated
+            companion alias can become distinctive in the text.
           </figcaption>
         </figure>
 
         <figure class="figure-block">
           <img
             src="figures/word_clouds/house_cloud.png"
-            alt="Grid of TF-IDF word clouds, one per major house in A Song of Ice and Fire, showing the words most distinctive to each house's collected character pages."
+            alt="Grid of TF-IDF word clouds for major allegiance groups in A Song of Ice and Fire, showing the words most distinctive to each group's collected character pages."
           />
           <figcaption>
-            [PLACEHOLDER CAPTION] The language of the houses. Pooling
-            all members of a house gives a collective vocabulary —
-            winter and oaths for the Starks, gold and debt for the
-            Lannisters, fire and blood for the Targaryens.
+            The language of allegiance groups. Some groups are noble houses,
+            such as Stark, Lannister, and Targaryen; others are institutions
+            or factions, such as the Citadel, the Night's Watch, the Faith
+            of the Seven, and Mance Rayder's wildling group. Pooling members
+            reveals collective vocabularies, but also inherited quirks:
+            Lannister's <code>duck</code> token comes mainly from Tyrion's
+            corpus, not from a broader Lannister theme.
           </figcaption>
         </figure>
 
         <div class="prose">
           <p>
-            [PLACEHOLDER COPY] Short reading of the wordclouds: how the
-            language differs between storylines, what each cluster tells
-            us about the themes of that thread (winter and oaths around
-            the Starks; gold and debt around the Lannisters; fire and
-            blood around the Targaryens, etc.).
+            The word clouds add a text layer to the network analysis. The
+            network shows where characters sit socially; TF-IDF shows the
+            story-world vocabulary that surrounds them. Character clouds tend
+            to recover local arcs and settings, while group clouds recover
+            broader collective identities: northern geography around Stark,
+            dragons and Valyrian language around Targaryen, seafaring around
+            Greyjoy, and institutional vocabulary around the Citadel.
+          </p>
+          <p>
+            The clouds should be read as visual summaries, not exact ranked
+            evidence. The explainer notebook contains the underlying TF-IDF
+            tables and the full discussion of limitations, including wiki
+            source-section language, adaptation wording, and nickname leakage.
           </p>
         </div>
       </section>
