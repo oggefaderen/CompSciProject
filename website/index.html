@@ -21,7 +21,7 @@
     <header class="site-header" aria-label="Site navigation">
       <a class="brand" href="#top" aria-label="Karma in Westeros home">
         <span class="brand-sigil" aria-hidden="true">✦</span>
-        <span class="brand-name">Karma in Westeros</span>
+        <span class="brand-name">Computational Social Science</span>
       </a>
       <nav class="nav-links" aria-label="Page sections">
         <a href="#motivation">Motivation</a>
@@ -37,17 +37,17 @@
       <!-- ============== HERO ============== -->
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-inner">
-          <p class="eyebrow">A Song of Ice and Fire · data story</p>
+          <p class="eyebrow">A Song of Ice and Fire an exploration of interactions</p>
           <h1 id="hero-title">
             <span class="hero-line">When you play the game of thrones,</span>
-            <span class="hero-accent">someone takes notes.</span>
+            <span class="hero-accent">you build a network</span>
           </h1>
           <p class="hero-lede">
-            Westeros has thousands of named characters, hundreds of allegiances,
-            and a chronicle full of grudges. We turn the wiki of <em>A Song
-            of Ice and Fire</em> into a network, ask which characters truly
-            hold it together, and use language and an LLM-scored
-            <em>karma</em> layer to see how conflict shapes the story.
+            Westeros has thousands of named characters, hundreds of
+            allegiances, and a story built on infighting. We scrape the
+            wiki of <em>A Song of Ice and Fire</em>, turn it into a
+            network, and add an LLM-scored <em>karma</em> layer to see what
+            its structure reveals.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#motivation">Begin the chronicle</a>
@@ -68,12 +68,13 @@
 
         <div class="prose">
           <p class="drop-cap">
-            George R. R. Martin's saga is a story about
-            <em>relationships</em>: alliances and betrayals, marriages and
-            murders, oaths kept and broken. That makes it an unusually rich
-            text for network science. Where most fiction has a clear
-            protagonist, Westeros has a tangle of perspectives, and a wiki
-            that has catalogued nearly every name.
+            George R. R. Martin's <em>A Song of Ice and Fire</em> (ASOIAF)
+            is a story about <em>relationships</em>: alliances and
+            betrayals, marriages and murders, oaths kept and broken. That
+            makes it an unusually rich text for network science. Where most
+            fiction has one clear protagonist, ASOIAF has a tangle of
+            perspectives spanning the main novels and their prequels, and a
+            wiki that has catalogued nearly every name.
           </p>
           <p>
             The central question of this project is:
@@ -89,89 +90,147 @@
           </p>
           <ol class="research-list">
             <li>
-              <strong>Topology.</strong> Does the affiliation network's
-              <em>degree distribution</em> (how many connections each
-              character has) and <em>assortativity</em> (whether
-              well-connected characters tend to link to other
-              well-connected ones) look like a real social graph, or could
+              <strong>Network Structure</strong> Does the affiliation network's
+              <em>degree distribution</em> and <em>assortativity</em> look like a real social graph, or could
               a randomly-rewired network produce the same pattern?
             </li>
             <li>
-              <strong>Community structure.</strong> Can a
-              community-detection algorithm (one that groups densely
-              connected nodes) recover the allegiance labels from the
-              network alone, without ever reading a banner?
+              <strong>Louvian Detection</strong> Can a
+              community-detection algorithm recover the allegiance labels from the
+              network alone, if not what are then then some defining characteristics of the network?
             </li>
             <li>
-              <strong>Vocabulary.</strong> What words distinguish each
-              allegiance's collected biographies and quotes beyond who
-              they know?
+              <strong>Vocabulary.</strong> Can we infer main characteristics of the main houses storylines through TF-IDF, and what does it tell about the story?
             </li>
             <li>
-              <strong>Karma.</strong> Score every directed character
+              <strong>Karma.</strong> We score for the 100 largest characters every directed
               relationship from 1 (sworn enemy) to 10 (closest bond) with
               a local language model. Do the resulting "feelings" align
               with canonical conflicts and loyalties?
             </li>
           </ol>
           <p>
-            Fictional networks make a useful sandbox: we have stable domain
-            knowledge, the data is open and reproducible, and the failures, when
-            a method gets something obviously wrong, are easy to spot.
-            The project is as much about <em>what computational social
-            science methods can and cannot do</em> as it is about Westeros.
+            We chose to explore the ASOIAF dataset, as it's a fun sandbox to explore networks through a fictional arena where we have domain knowledge of the story to help understand the dataset.
           </p>
         </div>
 
         <div class="section-heading section-heading-tight">
-          <h3>What we have to work with</h3>
+          <h3>The dataset</h3>
+        </div>
+
+        <div class="prose">
+          <p>
+            All data is scraped from
+            <a href="https://awoiaf.westeros.org" rel="noreferrer"><em>A
+            Wiki of Ice and Fire</em></a>, the fan-curated canonical
+            reference for the novels. Every page is public and every
+            subject is fictional, so there are no privacy concerns; we
+            cite the wiki as the source and never write back to it. The
+            wiki has no API, so each page is fetched directly with a
+            browser User-Agent, parallelised over eight workers (about ten
+            minutes total).
+          </p>
+          <p>
+            Four datasets are collected, one per scraper:
+          </p>
+          <ul>
+            <li>
+              <strong>Character roster</strong>
+              (<code>characters.csv</code>): every named character with a
+              stable URL-slug ID.
+            </li>
+            <li>
+              <strong>Enrichment and affiliation graph</strong>
+              (<code>characters_enriched_v3.csv</code>): structured
+              metadata per character (family, allegiance) plus the
+              <em>affiliated</em> links that form the network. This is the
+              dataset the analysis is built on.
+            </li>
+            <li>
+              <strong>Biographies</strong>
+              (<code>characters_bio.csv</code>): the full narrative prose
+              of each character page, used for the text analysis.
+            </li>
+            <li>
+              <strong>Quotes</strong>
+              (<code>characters_quotes.csv</code>): every attributed
+              quote, with speaker and recipient where the wiki links them.
+            </li>
+          </ul>
         </div>
 
         <div class="metric-grid">
           <article class="metric-card">
-            <span class="metric-value">3,690</span>
-            <span class="metric-label">named characters</span>
+            <span class="metric-value">3,689</span>
+            <span class="metric-label">named characters (nodes)</span>
           </article>
           <article class="metric-card">
             <span class="metric-value">23,322</span>
-            <span class="metric-label">affiliation links</span>
+            <span class="metric-label">affiliation links (edges)</span>
           </article>
           <article class="metric-card">
             <span class="metric-value">546</span>
-            <span class="metric-label">allegiances</span>
+            <span class="metric-label">distinct allegiances</span>
           </article>
           <article class="metric-card">
-            <span class="metric-value">4,626</span>
-            <span class="metric-label">quote records</span>
+            <span class="metric-value">~4,600</span>
+            <span class="metric-label">attributed quotes</span>
           </article>
         </div>
 
         <div class="prose">
           <p>
-            Each row in our cleaned dataset
-            (<code>characters_enriched_v3.csv</code>) is one named
-            character scraped from <em>A Wiki of Ice and Fire</em>. For
-            every character we keep their canonical name and ID, their
-            family ties (father, mother, spouse, lover, issue), their
-            primary allegiance, and the list of other characters they
-            are <em>affiliated</em> with: the field that becomes the
-            backbone of the network.
+            Each row of <code>characters_enriched_v3.csv</code> is one
+            named character. For every character we retain:
+          </p>
+          <ul>
+            <li>
+              <strong>Name and ID</strong>: canonical name and unique
+              slug identifier.
+            </li>
+            <li>
+              <strong>Family ties</strong>: <em>father</em>,
+              <em>mother</em>, <em>spouse</em>, <em>lover</em>,
+              <em>issue</em>.
+            </li>
+            <li>
+              <strong>Allegiance</strong>: primary house, order, or
+              faction.
+            </li>
+            <li>
+              <strong>Affiliated</strong>: the other characters the page
+              links to in its narrative sections. This field forms the
+              backbone of the network.
+            </li>
+          </ul>
+          <p>
+            The family-tie variables are not used in the final analysis.
+            They were scraped early and later found redundant, since the
+            network is built solely from the <em>affiliated</em> field. We
+            keep the columns for transparency but exclude them from the
+            network.
           </p>
           <p>
-            81% of characters (2,990 of 3,690) declare at least one
-            allegiance, spread across 546 distinct allegiances (houses, orders, and factions). House Targaryen is the largest with 215 members,
-            followed by the Night's Watch, the Citadel, House Frey,
-            and House Stark. The full distribution is the long tail you
-            would expect: a handful of dynasties and a fog of
-            one-off retainers.
+            About 81% of characters declare at least one allegiance,
+            spread across 546 distinct houses, orders, and factions: a
+            short head of large dynasties and a long tail of one-off
+            retainers. For clarity the analysis focuses on the largest
+            allegiance groups, with a closer qualitative look at a handful
+            of central characters; the explainer notebook documents why
+            these cut-offs were chosen.
           </p>
           <p>
-            The v3 cleanup is the version we trust for analysis. Family
-            tree edges are kept in their own columns rather than mixed
-            into the affiliation network, so a great-great-grandfather
-            no longer counts as a teammate; only narrative
-            co-mentions do. That single change is what makes the
-            network behave like a story instead of a genealogy chart.
+            The affiliation data went through three scraper versions. The
+            naive first version linked every character mentioned anywhere
+            on a page, which wired ancestors to descendants centuries
+            apart through Family sections and even pulled lore from
+            reference tables (one minor character, "Demon of Darry",
+            surfaced as one of the most connected nodes). The v3 scraper
+            collects links only from the <em>History</em> and <em>Recent
+            Events</em> sections, so an edge means two characters share a
+            storyline, not a family tree. This cut the network from 36,315
+            to 23,322 edges and is the version used throughout. The full
+            lineage is documented in the explainer notebook.
           </p>
         </div>
       </section>
@@ -182,11 +241,32 @@
           <p class="section-eyebrow">Chapter II</p>
           <h2 id="topography-title">The Shape of the Realm</h2>
           <p class="section-lede">
-            Before we go looking for stories in the data, we ask what kind
-            of network this even is. A handful of giants and a long tail
-            of footnotes? Or something flatter? We compare the real
-            Westeros network against a randomly-rewired counterpart to
-            see what's distinctive about it.
+            Before searching for stories in the data, we ask what kind of
+            network this is. We test its structure against two random
+            baselines: an Erdős-Rényi graph with the same size and density,
+            for the degree distribution; and a degree-preserving
+            configuration model (100 double-edge-swap randomisations), for
+            the assortativity measures. Any effect that survives the
+            configuration null is genuine social structure, not a
+            by-product of the degree sequence.
+          </p>
+        </div>
+
+        <div class="prose">
+          <p>
+            Three properties are examined: the <strong>degree
+            distribution</strong> (how connections are spread, and whether
+            a few characters dominate), <strong>degree assortativity</strong>
+            (whether highly connected characters attach to one another or to
+            the periphery), and <strong>allegiance assortativity</strong>
+            (whether characters of the same allegiance connect more than
+            chance predicts). We hypothesise that the network is strongly
+            disassortative by degree, since fiction is narrated through
+            a few central characters who link to many otherwise-isolated
+            figures, and positively assortative by allegiance. We do not
+            expect clannish wiring: the drama turns on cross-allegiance
+            entanglements, so allegiance assortativity should sit clearly
+            above the baseline yet well below 1.
           </p>
         </div>
 
@@ -196,11 +276,13 @@
             alt="Degree distribution of the cleaned Westeros affiliation network plotted on log-log axes. The distribution is heavy-tailed, with a small number of high-degree characters and a long tail of low-degree ones."
           />
           <figcaption>
-            Degree distribution of the cleaned affiliation network on log-log
-            axes. The heavy-tailed shape is the signature of a Pareto-style
-            power law: a handful of central characters connect to many others,
-            while most characters sit in the long tail. A randomly-wired graph
-            of the same size would not produce this shape.
+            Degree distribution of the cleaned affiliation network (gold)
+            against an Erdős-Rényi random graph with the same size and
+            density (blue), on log-log axes. Despite an almost identical
+            mean degree (10.8 vs 10.7), the random graph is a tight Poisson
+            peak while the real network is heavy-tailed, an approximately
+            straight line on log-log axes. The network is therefore clearly
+            not random.
           </figcaption>
         </figure>
 
@@ -210,12 +292,11 @@
             alt="Histogram of degree assortativity coefficients computed on 100 configuration-model rewirings of the affiliation network, with the real network's coefficient marked for comparison."
           />
           <figcaption>
-            Degree assortativity of the real network compared to 100 random
-            networks generated by configuration-model rewiring (degree
-            sequence preserved). The placement of the real-network value
-            relative to the null distribution tells us whether high-degree
-            characters connect to each other more or less than chance
-            predicts: the topological signature of a hierarchy.
+            Degree assortativity of the real network compared to 100
+            configuration-model rewirings (degree sequence preserved). The
+            real value sits below the null, so the network is disassortative
+            beyond chance, but only weakly to moderately so, less
+            disassortative than we expected.
           </figcaption>
         </figure>
 
@@ -225,74 +306,76 @@
             alt="Histogram of allegiance assortativity coefficients computed on 100 configuration-model rewirings, with the real network's coefficient marked for comparison."
           />
           <figcaption>
-            The same null-model comparison applied to allegiance assortativity:
-            do characters from the same allegiance connect to each
-            other more often than chance predicts in a network with the same
-            degree sequence? A real-network value far above the null
-            distribution is direct evidence of allegiance homophily, the
-            structural reason Louvain community detection works as well as
-            it does in the next chapter.
+            The same null-model comparison applied to allegiance
+            assortativity: do characters from the same allegiance connect to
+            each other more often than chance predicts in a network with the
+            same degree sequence? The real-network value sits way above the
+            null, evidence of allegiance homophily, but the coefficient is
+            well below 1: the network is assortative, not clannish, with
+            many cross-allegiance edges. This homophily is necessary but not
+            sufficient for the network's own communities to coincide with
+            allegiances, which the next chapter tests directly.
           </figcaption>
         </figure>
 
-        <!--
-          TODO(team): bridging paragraph from "what the topology looks like"
-          to "and so we go looking for allegiances next." Keep it short, one or
-          two sentences max, pointing forward to Chapter III.
-        -->
+        <div class="prose">
+          <p>
+            The topology is the shape of a story, not a random graph: a few
+            hubs, a heavy tail, a weak degree hierarchy, and only moderate
+            allegiance homophily. That last point frames the next question.
+            If characters lean toward their own allegiance but only
+            moderately, do the network's own communities recover the houses,
+            or something else entirely?
+          </p>
+        </div>
       </section>
 
       <!-- ============== 3. ALLEGIANCES (Louvain vs true) ============== -->
       <section id="allegiances" class="section" aria-labelledby="allegiances-title">
         <div class="section-heading">
           <p class="section-eyebrow">Chapter III</p>
-          <h2 id="allegiances-title">Predicting the Allegiances</h2>
+          <h2 id="allegiances-title">Do Communities Recover Allegiances?</h2>
           <p class="section-lede">
-            The map of Westeros divides the realm into allegiances; the
-            wiki labels every character with one. But could we recover
-            that division from the network alone, without ever reading
-            a banner? We run <em>Louvain community detection</em>, an
-            algorithm that groups densely connected nodes into communities
-            without any labels, on the cleaned graph and compare its
-            output to the true allegiance labels.
+            We run Louvain community detection on the affiliation network
+            with no access to the wiki's allegiance labels, then ask how
+            closely the communities it finds match the allegiances readers
+            already know. This chapter reports the result and what it
+            implies about how ASOIAF is organised. Major characters are
+            marked on the graphs to make the structure easier to read.
           </p>
         </div>
 
         <figure class="figure-block">
           <img
-            src="figures/graph_analysis/louvian_plot.png"
+            src="figures/graph_analysis/social_affiliation_graph.png"
             alt="The Westeros affiliation network with each node coloured by the Louvain community it was assigned to, with no access to the wiki's allegiance labels."
           />
           <figcaption>
-            Louvain community detection applied to the cleaned affiliation
-            network. Each colour is a community the algorithm found purely
-            from edge structure, without ever reading a banner. The visual
-            question, and the one the next panels measure, is how closely
-            those algorithmic communities align with the allegiances readers
-            already know.
+            Several patterns are already visible. Three main hubs stand
+            out; a qualitative look suggests the two smaller ones are built
+            around the prequel stories, which sit in distinct time periods
+            from the main plot and give the graph a temporal dimension. We
+            tried to quantify this but could not find a stable measure from
+            the available data (see the noted limitation below). Proximity
+            also shows how intertwined some storylines are, while Daenerys
+            sits apart, her arc unfolding on another continent. Some houses
+            cluster tightly (Frey); others are spread out (Citadel); and
+            House Targaryen is split across three clusters.
           </figcaption>
         </figure>
-
-        <div class="prose">
-          <p>
-            This first view is deliberately blind to the story world. If the
-            colours still resemble political groups, then allegiance is not
-            only a label written on a wiki page; it is also present in the
-            pattern of shared affiliations.
-          </p>
-        </div>
 
         <div class="figure-row">
           <figure class="figure-block figure-half">
             <img
-              src="figures/graph_analysis/social_affiliation_graph.png"
+              src="figures/graph_analysis/louvian_plot.png"
               alt="The same affiliation network coloured by each character's true allegiance label, for visual comparison with the Louvain communities above."
             />
             <figcaption>
-              The same network coloured by ground-truth allegiance labels.
-              Comparing this against the Louvain panel above shows where
-              the algorithm aligns with canon and where it splits or merges
-              allegiance boundaries.
+              The same network coloured by Louvain community, each node
+              assigned its community's majority allegiance. The communities
+              are now far larger (C12 has 523 members, C11 has 444), partly
+              because this view uses the full dataset rather than only the
+              largest houses.
             </figcaption>
           </figure>
           <figure class="figure-block figure-half">
@@ -301,21 +384,10 @@
               alt="Quantitative measures of community quality: purity and homogeneity scores comparing Louvain communities against the true allegiance labels."
             />
             <figcaption>
-              Two quality measures. Purity asks how dominated each Louvain
-              community is by its largest allegiance; homogeneity asks how mixed
-              the communities are overall. High values on both indicate the
-              algorithm recovered the allegiance structure.
+              Per-community purity: how dominated each community is by its
+              largest allegiance.
             </figcaption>
           </figure>
-        </div>
-
-        <div class="prose">
-          <p>
-            The visual comparison suggests that Louvain is finding something
-            meaningful, but the network is too dense to trust by eye alone.
-            We therefore turn the comparison into scores: first at the level
-            of communities, then at the level of each allegiance group.
-          </p>
         </div>
 
         <figure class="figure-block">
@@ -324,69 +396,63 @@
             alt="Per-allegiance completeness chart showing what fraction of each allegiance's members land in its modal Louvain community."
           />
           <figcaption>
-            Per-allegiance completeness: of all members of a given allegiance, what
-            fraction land in that allegiance's largest Louvain community. High
-            completeness means the allegiance stays intact under community
-            detection; low completeness means the algorithm splits the
-            allegiance across multiple communities.
+            Per-allegiance completeness: what fraction of each allegiance's
+            members land together in its largest Louvain community.
           </figcaption>
         </figure>
-
-        <div class="prose">
-          <p>
-            The unevenness is part of the result. Some allegiances behave like
-            compact social blocs, while others are spread across eras,
-            institutions, and political roles. In other words, the algorithm
-            is not simply right or wrong; its mistakes point to places where
-            allegiance is more complicated than one group label.
-          </p>
-        </div>
 
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/allegiance_prediction_vs_null.png"
-            alt="Comparison of the Louvain-to-allegiance prediction quality against the distribution from a configuration-model null."
+            alt="Comparison of the Louvain-to-allegiance prediction quality against a shuffled and configuration-model null."
           />
           <figcaption>
-            Validation against a null model. How does the
-            Louvain–allegiance alignment compare to what a randomly-rewired
-            network with the same degree sequence would produce? A
-            real-network score well above the null distribution is evidence
-            that the network's structure genuinely encodes allegiance,
-            beyond what edge density alone could explain.
+            The Louvain-to-allegiance match against a random null with the
+            same degree sequence.
           </figcaption>
         </figure>
 
-        <div class="prose">
-          <p>
-            The null model is the statistical checkpoint. It asks whether the
-            observed match could appear just because some characters have many
-            connections and others have few. Beating that baseline means the
-            graph contains allegiance information beyond degree alone.
-          </p>
+        <div class="section-heading section-heading-tight">
+          <h3>Takeaways</h3>
         </div>
 
-        <figure class="figure-block">
-          <img
-            src="figures/graph_analysis/targaryen_era_split.png"
-            alt="Sub-community structure within House Targaryen, showing how Louvain detects historical-era sub-groups inside a single dynasty."
-          />
-          <figcaption>
-            A case study within the Targaryen super-community. Louvain
-            doesn't only recover allegiances. It also discovers sub-communities
-            along historical fault lines. Targaryens of different eras end
-            up in distinct Louvain communities, even though the wiki labels them
-            all as one allegiance. This is the algorithm finding political memory
-            the affiliation network alone made visible.
-          </figcaption>
-        </figure>
-
         <div class="prose">
+          <ul>
+            <li>
+              Allegiance can be recovered from the network only
+              <strong>partially</strong>. In our run (15 communities, 364
+              distinct allegiances) the dominant-allegiance vote reaches
+              about 24% accuracy and an ARI near 0.10. That is well above
+              the shuffled and configuration-model nulls (about 9% accuracy,
+              ARI near 0), so the structure genuinely encodes allegiance,
+              but it is far from a clean recovery.
+            </li>
+            <li>
+              Completeness (about 0.60) is much higher than homogeneity
+              (about 0.29): allegiances tend to stay together, but the
+              communities they fall into are <strong>mixed coalitions, not
+              pure allegiances</strong>. A few large communities absorb many
+              allegiances, and cross-cutting orders such as the Night's
+              Watch and the Faith blur the boundaries.
+            </li>
+            <li>
+              Allegiance is therefore present in the network but is
+              <strong>not its organising unit</strong>. The network groups
+              characters by shared storyline more than by the banner they
+              fly.
+            </li>
+          </ul>
           <p>
-            The final takeaway is that community detection does more than
-            recover familiar banners. It finds where the affiliation network
-            agrees with the official labels, where those labels blur, and where
-            a single allegiance contains several historical sub-stories.
+            <strong>Noted limitation (not fully researched).</strong> A
+            single allegiance can also span centuries: Targaryens of
+            different eras fall into different communities even though the
+            wiki labels them all as one house. This suggests the communities
+            partly track historical period rather than dynasty, a temporal
+            effect on top of the storyline one. We flag this as a likely
+            driver but did not have time to investigate it fully. Testing it
+            properly would require scraping each character's birth and death
+            years and dropping affiliation edges between characters whose
+            lifetimes never overlap. We leave this for future work.
           </p>
         </div>
       </section>
@@ -507,83 +573,115 @@
 
         <h3 class="subsection-title">Ten points of view</h3>
         <p class="prose-note">
-          Each panel below is one character's outgoing karma: their view
-          of the people around them. Red edges mark enemy scores, grey
-          edges mark neutral ties, green edges mark friend scores, and
-          thicker lines sit farther from the neutral middle.
+          Select a character to see their outgoing karma: how they rate
+          everyone around them. Red edges mark enemy scores, grey neutral,
+          green friend; thicker lines sit farther from the neutral middle.
         </p>
 
-        <div id="ego-networks" class="ego-grid">
-          <figure class="figure-block">
-            <img src="figures/ego_networks/jon_snow.png" alt="Karma ego network for Jon Snow." />
-            <figcaption>
-              <strong>Jon Snow</strong>
-              <span>Jon's plot is unusually loyal: green ties cluster around the Starks and Night's Watch, while the red edges isolate clear threats such as Ramsay and hostile commanders.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/daenerys_targaryen.png" alt="Karma ego network for Daenerys Targaryen." />
-            <figcaption>
-              <strong>Daenerys Targaryen</strong>
-              <span>Daenerys is split between loyal Targaryen and companion ties and a wide enemy field of usurpers, rivals, and slave-trade antagonists.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/tyrion_lannister.png" alt="Karma ego network for Tyrion Lannister." />
-            <figcaption>
-              <strong>Tyrion Lannister</strong>
-              <span>Tyrion's network is mostly neutral political contact, but the deepest red edges point into the Lannister court while his green ties are chosen allies and outsiders.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/cersei_lannister.png" alt="Karma ego network for Cersei Lannister." />
-            <figcaption>
-              <strong>Cersei Lannister</strong>
-              <span>Cersei has the harshest balance in the grid: enemy and neutral edges dominate, and positive ties shrink to a small circle of family or useful allies.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/robb_stark.png" alt="Karma ego network for Robb Stark." />
-            <figcaption>
-              <strong>Robb Stark</strong>
-              <span>Robb's green edges sit with Stark and Tully kin, while the red edges cut through Freys, Boltons, and Lannisters: the war reduced to personal ties.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/theon_greyjoy.png" alt="Karma ego network for Theon Greyjoy." />
-            <figcaption>
-              <strong>Theon Greyjoy</strong>
-              <span>Theon is pulled between Stark and Greyjoy clusters. The green Stark ties show remembered loyalty, while the red Bolton and Greyjoy edges capture coercion and betrayal.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/sandor_clegane.png" alt="Karma ego network for Sandor Clegane." />
-            <figcaption>
-              <strong>Sandor Clegane</strong>
-              <span>Sandor's ego network is mostly hostile or wary, especially around Lannister and Clegane contacts. The few green ties to Sansa, Tyrion, and Bronn stand out.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/melisandre.png" alt="Karma ego network for Melisandre." />
-            <figcaption>
-              <strong>Melisandre</strong>
-              <span>Melisandre sees the realm through conflict: red edges dominate the panel, with positive ties focused narrowly on Stannis, her faith, and a few useful allies.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/petyr_baelish.png" alt="Karma ego network for Petyr Baelish." />
-            <figcaption>
-              <strong>Petyr Baelish</strong>
-              <span>Littlefinger's graph is mostly grey rather than green: a web of instrumental contacts across allegiances, with red edges where manipulation turns into direct harm.</span>
-            </figcaption>
-          </figure>
-          <figure class="figure-block">
-            <img src="figures/ego_networks/walder_frey.png" alt="Karma ego network for Walder Frey." />
-            <figcaption>
-              <strong>Walder Frey</strong>
-              <span>Walder's network is family-first, with many green Frey ties. The Stark and Tully wedding targets form the darkest red edges in the panel.</span>
-            </figcaption>
-          </figure>
+        <div id="ego-networks" class="ego-tabs">
+          <div class="ego-tablist" role="tablist" aria-label="Character points of view">
+            <button class="ego-tab" role="tab" id="egotab-1" aria-controls="egopanel-1" aria-selected="true" tabindex="0" type="button">Jon Snow</button>
+            <button class="ego-tab" role="tab" id="egotab-2" aria-controls="egopanel-2" aria-selected="false" tabindex="-1" type="button">Daenerys Targaryen</button>
+            <button class="ego-tab" role="tab" id="egotab-3" aria-controls="egopanel-3" aria-selected="false" tabindex="-1" type="button">Tyrion Lannister</button>
+            <button class="ego-tab" role="tab" id="egotab-4" aria-controls="egopanel-4" aria-selected="false" tabindex="-1" type="button">Cersei Lannister</button>
+            <button class="ego-tab" role="tab" id="egotab-5" aria-controls="egopanel-5" aria-selected="false" tabindex="-1" type="button">Robb Stark</button>
+            <button class="ego-tab" role="tab" id="egotab-6" aria-controls="egopanel-6" aria-selected="false" tabindex="-1" type="button">Theon Greyjoy</button>
+            <button class="ego-tab" role="tab" id="egotab-7" aria-controls="egopanel-7" aria-selected="false" tabindex="-1" type="button">Sandor Clegane</button>
+            <button class="ego-tab" role="tab" id="egotab-8" aria-controls="egopanel-8" aria-selected="false" tabindex="-1" type="button">Melisandre</button>
+            <button class="ego-tab" role="tab" id="egotab-9" aria-controls="egopanel-9" aria-selected="false" tabindex="-1" type="button">Petyr Baelish</button>
+            <button class="ego-tab" role="tab" id="egotab-10" aria-controls="egopanel-10" aria-selected="false" tabindex="-1" type="button">Walder Frey</button>
+          </div>
+
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-1" aria-labelledby="egotab-1" tabindex="0">
+            <figure class="figure-block">
+              <img src="figures/ego_networks/jon_snow.png" alt="Karma ego network for Jon Snow." />
+              <figcaption>
+                <strong>Jon Snow</strong>
+                <span>Jon's plot is unusually loyal: green ties cluster around the Starks and Night's Watch, while the red edges isolate clear threats such as Ramsay and hostile commanders.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-2" aria-labelledby="egotab-2" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/daenerys_targaryen.png" alt="Karma ego network for Daenerys Targaryen." />
+              <figcaption>
+                <strong>Daenerys Targaryen</strong>
+                <span>Daenerys is split between loyal Targaryen and companion ties and a wide enemy field of usurpers, rivals, and slave-trade antagonists.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-3" aria-labelledby="egotab-3" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/tyrion_lannister.png" alt="Karma ego network for Tyrion Lannister." />
+              <figcaption>
+                <strong>Tyrion Lannister</strong>
+                <span>Tyrion's network is mostly neutral political contact, but the deepest red edges point into the Lannister court while his green ties are chosen allies and outsiders.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-4" aria-labelledby="egotab-4" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/cersei_lannister.png" alt="Karma ego network for Cersei Lannister." />
+              <figcaption>
+                <strong>Cersei Lannister</strong>
+                <span>Cersei has the harshest balance in the grid: enemy and neutral edges dominate, and positive ties shrink to a small circle of family or useful allies.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-5" aria-labelledby="egotab-5" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/robb_stark.png" alt="Karma ego network for Robb Stark." />
+              <figcaption>
+                <strong>Robb Stark</strong>
+                <span>Robb's green edges sit with Stark and Tully kin, while the red edges cut through Freys, Boltons, and Lannisters: the war reduced to personal ties.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-6" aria-labelledby="egotab-6" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/theon_greyjoy.png" alt="Karma ego network for Theon Greyjoy." />
+              <figcaption>
+                <strong>Theon Greyjoy</strong>
+                <span>Theon is pulled between Stark and Greyjoy clusters. The green Stark ties show remembered loyalty, while the red Bolton and Greyjoy edges capture coercion and betrayal.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-7" aria-labelledby="egotab-7" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/sandor_clegane.png" alt="Karma ego network for Sandor Clegane." />
+              <figcaption>
+                <strong>Sandor Clegane</strong>
+                <span>Sandor's ego network is mostly hostile or wary, especially around Lannister and Clegane contacts. The few green ties to Sansa, Tyrion, and Bronn stand out.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-8" aria-labelledby="egotab-8" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/melisandre.png" alt="Karma ego network for Melisandre." />
+              <figcaption>
+                <strong>Melisandre</strong>
+                <span>Melisandre sees the realm through conflict: red edges dominate the panel, with positive ties focused narrowly on Stannis, her faith, and a few useful allies.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-9" aria-labelledby="egotab-9" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/petyr_baelish.png" alt="Karma ego network for Petyr Baelish." />
+              <figcaption>
+                <strong>Petyr Baelish</strong>
+                <span>Littlefinger's graph is mostly grey rather than green: a web of instrumental contacts across allegiances, with red edges where manipulation turns into direct harm.</span>
+              </figcaption>
+            </figure>
+          </div>
+          <div class="ego-tabpanel" role="tabpanel" id="egopanel-10" aria-labelledby="egotab-10" tabindex="0" hidden>
+            <figure class="figure-block">
+              <img src="figures/ego_networks/walder_frey.png" alt="Karma ego network for Walder Frey." />
+              <figcaption>
+                <strong>Walder Frey</strong>
+                <span>Walder's network is family-first, with many green Frey ties. The Stark and Tully wedding targets form the darkest red edges in the panel.</span>
+              </figcaption>
+            </figure>
+          </div>
         </div>
 
         <!--
@@ -694,6 +792,46 @@
           { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
         );
         for (const section of map.keys()) observer.observe(section);
+      })();
+
+      // Accessible tabs for the karma ego networks.
+      (function () {
+        const tablist = document.querySelector(".ego-tablist");
+        if (!tablist) return;
+        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+        const panels = tabs.map((t) =>
+          document.getElementById(t.getAttribute("aria-controls"))
+        );
+
+        function select(idx, focus) {
+          tabs.forEach((tab, i) => {
+            const sel = i === idx;
+            tab.setAttribute("aria-selected", sel ? "true" : "false");
+            tab.tabIndex = sel ? 0 : -1;
+            if (panels[i]) panels[i].hidden = !sel;
+          });
+          if (focus) tabs[idx].focus();
+        }
+
+        tablist.addEventListener("click", (e) => {
+          const tab = e.target.closest('[role="tab"]');
+          if (tab) select(tabs.indexOf(tab), false);
+        });
+
+        tablist.addEventListener("keydown", (e) => {
+          const current = tabs.indexOf(document.activeElement);
+          if (current === -1) return;
+          let next = null;
+          if (e.key === "ArrowRight" || e.key === "ArrowDown")
+            next = (current + 1) % tabs.length;
+          else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+            next = (current - 1 + tabs.length) % tabs.length;
+          else if (e.key === "Home") next = 0;
+          else if (e.key === "End") next = tabs.length - 1;
+          if (next === null) return;
+          e.preventDefault();
+          select(next, true);
+        });
       })();
     </script>
   </body>
