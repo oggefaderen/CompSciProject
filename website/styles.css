@@ -350,6 +350,8 @@ h1, h2, h3, h4 {
 
 /* ============== FIGURES ============== */
 .figure-block {
+  position: relative;
+  isolation: isolate;
   margin: 50px auto;
   max-width: 920px;
 }
@@ -360,6 +362,7 @@ h1, h2, h3, h4 {
   border-radius: var(--radius);
   border: 1px solid var(--line-strong);
   background: var(--surface);
+  cursor: zoom-in;
 }
 .figure-block figcaption {
   margin-top: 16px;

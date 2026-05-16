@@ -1,7 +1,7 @@
 const csvFiles = {
-  characters: "characters_enriched_v2.csv",
-  karma: "karma_edges_v2.csv",
-  top: "top100_outgoing_v2.csv",
+  characters: "characters_enriched_v3.csv",
+  karma: "karma_edges_v3.csv",
+  top: "top100_outgoing_v3.csv",
   quotes: "characters_quotes.csv",
 };
 
@@ -531,9 +531,9 @@ function renderQuotes() {
 
 function renderDownloads() {
   const downloads = [
-    ["Cleaned character network", "characters_enriched_v2.csv", "Characters with allegiance and cleaned affiliation links."],
-    ["Karma scored edges", "karma_edges_v2.csv", "Top-character source and target pairs with 1 to 10 scores."],
-    ["Top 100 hubs", "top100_outgoing_v2.csv", "The highest outgoing-degree characters after the v2 cleanup."],
+    ["Cleaned character network", "characters_enriched_v3.csv", "Characters with allegiance and cleaned affiliation links."],
+    ["Karma scored edges", "karma_edges_v3.csv", "Top-character source and target pairs with 1 to 10 scores."],
+    ["Top 100 hubs", "top100_outgoing_v3.csv", "The highest outgoing-degree characters after the v3 cleanup."],
     ["Quote corpus", "characters_quotes.csv", "Per-character quotes with speaker and recipient IDs where available."],
     ["Character biographies", "characters_bio.csv", "Biography text used as context for analysis and scoring."],
     ["Network notebook", "https://github.com/oggefaderen/CompSciProject/raw/main/network.ipynb", "The notebook that builds and explores the relationship graph."],

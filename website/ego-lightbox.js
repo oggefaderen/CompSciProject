@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const figures = [...document.querySelectorAll("#ego-networks .figure-block")];
+  const figures = [...document.querySelectorAll(".figure-block")];
   if (!figures.length) return;
 
   const lightbox = document.createElement("div");
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.createElement("button");
     button.className = "ego-expand-button";
     button.type = "button";
-    button.setAttribute("aria-label", `Expand ${title} ego network`);
+    button.setAttribute("aria-label", `Expand figure: ${title}`);
     button.innerHTML = `<span aria-hidden="true">⤢</span>`;
 
     button.addEventListener("click", () => openLightbox(image, caption));
