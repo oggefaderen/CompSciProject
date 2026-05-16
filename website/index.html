@@ -72,7 +72,7 @@
             <em>relationships</em>: alliances and betrayals, marriages and
             murders, oaths kept and broken. That makes it an unusually rich
             text for network science. Where most fiction has a clear
-            protagonist, Westeros has a tangle of perspectives — and a wiki
+            protagonist, Westeros has a tangle of perspectives, and a wiki
             that has catalogued nearly every name.
           </p>
           <p>
@@ -81,7 +81,7 @@
           <p class="research-question">
             <em>Can we infer allegiances, conflicts, and defining
             characteristics for the allegiances of Westeros from computational
-            social science methods alone — without reading the books?</em>
+            social science methods alone, without reading the books?</em>
           </p>
           <p>
             Four sub-questions structure the analysis, one per chapter that
@@ -98,8 +98,8 @@
             </li>
             <li>
               <strong>Community structure.</strong> Can a
-              community-detection algorithm — one that groups densely
-              connected nodes — recover the allegiance labels from the
+              community-detection algorithm (one that groups densely
+              connected nodes) recover the allegiance labels from the
               network alone, without ever reading a banner?
             </li>
             <li>
@@ -116,8 +116,8 @@
           </ol>
           <p>
             Fictional networks make a useful sandbox: we have stable domain
-            knowledge, the data is open and reproducible, and the failures —
-            when a method gets something obviously wrong — are easy to spot.
+            knowledge, the data is open and reproducible, and the failures, when
+            a method gets something obviously wrong, are easy to spot.
             The project is as much about <em>what computational social
             science methods can and cannot do</em> as it is about Westeros.
           </p>
@@ -154,7 +154,7 @@
             every character we keep their canonical name and ID, their
             family ties (father, mother, spouse, lover, issue), their
             primary allegiance, and the list of other characters they
-            are <em>affiliated</em> with — the field that becomes the
+            are <em>affiliated</em> with: the field that becomes the
             backbone of the network.
           </p>
           <p>
@@ -162,7 +162,7 @@
             allegiance, spread across 546 distinct allegiances (houses, orders, and factions). House Targaryen is the largest with 215 members,
             followed by the Night's Watch, the Citadel, House Frey,
             and House Stark. The full distribution is the long tail you
-            would expect — a handful of dynasties and a fog of
+            would expect: a handful of dynasties and a fog of
             one-off retainers.
           </p>
           <p>
@@ -215,7 +215,7 @@
             sequence preserved). The placement of the real-network value
             relative to the null distribution tells us whether high-degree
             characters connect to each other more or less than chance
-            predicts — the topological signature of a hierarchy.
+            predicts: the topological signature of a hierarchy.
           </figcaption>
         </figure>
 
@@ -229,7 +229,7 @@
             do characters from the same allegiance connect to each
             other more often than chance predicts in a network with the same
             degree sequence? A real-network value far above the null
-            distribution is direct evidence of allegiance homophily — the
+            distribution is direct evidence of allegiance homophily, the
             structural reason Louvain community detection works as well as
             it does in the next chapter.
           </figcaption>
@@ -237,7 +237,7 @@
 
         <!--
           TODO(team): bridging paragraph from "what the topology looks like"
-          to "and so we go looking for allegiances next." Keep it short — one or
+          to "and so we go looking for allegiances next." Keep it short, one or
           two sentences max, pointing forward to Chapter III.
         -->
       </section>
@@ -250,10 +250,10 @@
           <p class="section-lede">
             The map of Westeros divides the realm into allegiances; the
             wiki labels every character with one. But could we recover
-            that division from the network alone — without ever reading
-            a banner? We run <em>Louvain community detection</em> — an
+            that division from the network alone, without ever reading
+            a banner? We run <em>Louvain community detection</em>, an
             algorithm that groups densely connected nodes into communities
-            without any labels — on the cleaned graph and compare its
+            without any labels, on the cleaned graph and compare its
             output to the true allegiance labels.
           </p>
         </div>
@@ -267,11 +267,20 @@
             Louvain community detection applied to the cleaned affiliation
             network. Each colour is a community the algorithm found purely
             from edge structure, without ever reading a banner. The visual
-            question — and the one the next panels measure — is how closely
+            question, and the one the next panels measure, is how closely
             those algorithmic communities align with the allegiances readers
             already know.
           </figcaption>
         </figure>
+
+        <div class="prose">
+          <p>
+            This first view is deliberately blind to the story world. If the
+            colours still resemble political groups, then allegiance is not
+            only a label written on a wiki page; it is also present in the
+            pattern of shared affiliations.
+          </p>
+        </div>
 
         <div class="figure-row">
           <figure class="figure-block figure-half">
@@ -300,6 +309,15 @@
           </figure>
         </div>
 
+        <div class="prose">
+          <p>
+            The visual comparison suggests that Louvain is finding something
+            meaningful, but the network is too dense to trust by eye alone.
+            We therefore turn the comparison into scores: first at the level
+            of communities, then at the level of each allegiance group.
+          </p>
+        </div>
+
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/group_modal_community_completeness.png"
@@ -313,6 +331,16 @@
             allegiance across multiple communities.
           </figcaption>
         </figure>
+
+        <div class="prose">
+          <p>
+            The unevenness is part of the result. Some allegiances behave like
+            compact social blocs, while others are spread across eras,
+            institutions, and political roles. In other words, the algorithm
+            is not simply right or wrong; its mistakes point to places where
+            allegiance is more complicated than one group label.
+          </p>
+        </div>
 
         <figure class="figure-block">
           <img
@@ -329,6 +357,15 @@
           </figcaption>
         </figure>
 
+        <div class="prose">
+          <p>
+            The null model is the statistical checkpoint. It asks whether the
+            observed match could appear just because some characters have many
+            connections and others have few. Beating that baseline means the
+            graph contains allegiance information beyond degree alone.
+          </p>
+        </div>
+
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/targaryen_era_split.png"
@@ -336,7 +373,7 @@
           />
           <figcaption>
             A case study within the Targaryen super-community. Louvain
-            doesn't only recover allegiances — it also discovers sub-communities
+            doesn't only recover allegiances. It also discovers sub-communities
             along historical fault lines. Targaryens of different eras end
             up in distinct Louvain communities, even though the wiki labels them
             all as one allegiance. This is the algorithm finding political memory
@@ -344,12 +381,14 @@
           </figcaption>
         </figure>
 
-        <!--
-          TODO(team): interpretation paragraph(s) reading the result —
-          where Louvain succeeds (Starks, Targaryens), where it stumbles
-          (mixed-allegiance characters, the Night's Watch), and what that
-          says about how allegiances actually work in the text.
-        -->
+        <div class="prose">
+          <p>
+            The final takeaway is that community detection does more than
+            recover familiar banners. It finds where the affiliation network
+            agrees with the official labels, where those labels blur, and where
+            a single allegiance contains several historical sub-stories.
+          </p>
+        </div>
       </section>
 
       <!-- ============== 4. STORYLINES (TF-IDF wordclouds) ============== -->
@@ -360,9 +399,9 @@
           <p class="section-lede">
             Network structure tells us who is connected to whom; the text
             tells us <em>about what</em>. We combine biography text and
-            attributed quotes, then use <em>TF-IDF</em> — a measure that
+            attributed quotes, then use <em>TF-IDF</em>, a measure that
             rewards words that are frequent within one document but rare
-            across the others — to surface the words that make each
+            across the others, to surface the words that make each
             character or allegiance distinctive. These are not simply
             the most common words, but the words that separate one
             storyline from the others.
@@ -432,7 +471,7 @@
             another. For the top 100 most connected characters, we asked
             a local language model to read the biographies and rate each
             directed relationship on a one-to-ten karma scale. The result
-            is a map of who fights whom — and a reminder that this is a
+            is a map of who fights whom, and a reminder that this is a
             conflict-driven story.
           </p>
         </div>
@@ -454,14 +493,14 @@
           />
           <figcaption>
             The full distribution of LLM-scored karma. The spike at 5 is
-            the model's neutral hedge; the asymmetry to either side — a
-            long crimson tail of hostility, a sparser gold tail of warmth
-            — is the story.
+            the model's neutral hedge. The asymmetry to either side is
+            the story: a long crimson tail of hostility, a sparser gold
+            tail of warmth.
           </figcaption>
         </figure>
 
         <!--
-          TODO(team): Figure 5.2 — the lowest-karma conflict graph.
+          TODO(team): Figure 5.2 is the lowest-karma conflict graph.
           Drop the rendered figure into figures/karma_network/ and replace
           this placeholder with a real <figure> block once it's exported.
         -->
@@ -549,7 +588,7 @@
 
         <!--
           TODO(team): closing interpretation paragraph(s). Read the karma
-          results — the saga is structured around enmity rather than
+          results, the saga is structured around enmity rather than
           friendship; mean pairwise sentiment is hostile; the highest
           outgoing-karma characters disproportionately die. End with a
           pointer to the explainer notebook.
@@ -563,7 +602,7 @@
           <h2 id="downloads-title">Take the Data</h2>
           <p class="section-lede">
             The website is the readable story. The notebooks are the work
-            behind it — scraping, cleaning, the network construction,
+            behind it: scraping, cleaning, the network construction,
             the LLM scoring, and every choice we made along the way.
           </p>
         </div>
