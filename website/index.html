@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Karma in Westeros | Networks, Houses, and Conflict in A Song of Ice and Fire</title>
+    <title>Karma in Westeros | Networks, Allegiances, and Conflict in A Song of Ice and Fire</title>
     <meta
       name="description"
-      content="A data story about the characters, houses, storylines, and conflicts of A Song of Ice and Fire."
+      content="A data story about the characters, allegiances, storylines, and conflicts of A Song of Ice and Fire."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#top">Skip to content</a>
     <header class="site-header" aria-label="Site navigation">
       <a class="brand" href="#top" aria-label="Karma in Westeros home">
         <span class="brand-sigil" aria-hidden="true">✦</span>
@@ -25,7 +26,7 @@
       <nav class="nav-links" aria-label="Page sections">
         <a href="#motivation">Motivation</a>
         <a href="#topography">Topography</a>
-        <a href="#houses">Houses</a>
+        <a href="#allegiances">Allegiances</a>
         <a href="#storylines">Storylines</a>
         <a href="#karma">Karma</a>
         <a href="#downloads">Data</a>
@@ -38,11 +39,11 @@
         <div class="hero-inner">
           <p class="eyebrow">A Song of Ice and Fire · data story</p>
           <h1 id="hero-title">
-            When you play the game of thrones,<br />
+            <span class="hero-line">When you play the game of thrones,</span>
             <span class="hero-accent">someone takes notes.</span>
           </h1>
           <p class="hero-lede">
-            Westeros has thousands of named characters, hundreds of houses,
+            Westeros has thousands of named characters, hundreds of allegiances,
             and a chronicle full of grudges. We turn the wiki of <em>A Song
             of Ice and Fire</em> into a network, ask which characters truly
             hold it together, and use language and an LLM-scored
@@ -79,7 +80,7 @@
           </p>
           <p class="research-question">
             <em>Can we infer allegiances, conflicts, and defining
-            characteristics for the houses of Westeros from computational
+            characteristics for the allegiances of Westeros from computational
             social science methods alone — without reading the books?</em>
           </p>
           <p>
@@ -95,12 +96,12 @@
             </li>
             <li>
               <strong>Community structure.</strong> Can a community-detection
-              algorithm recover the house labels from the network alone,
+              algorithm recover the allegiance labels from the network alone,
               without ever reading a banner?
             </li>
             <li>
               <strong>Vocabulary.</strong> What words distinguish each
-              house's collected biographies and quotes beyond who they know?
+              allegiance's collected biographies and quotes beyond who they know?
             </li>
             <li>
               <strong>Karma.</strong> Score every directed character
@@ -133,7 +134,7 @@
           </article>
           <article class="metric-card">
             <span class="metric-value">546</span>
-            <span class="metric-label">houses &amp; factions</span>
+            <span class="metric-label">allegiances</span>
           </article>
           <article class="metric-card">
             <span class="metric-value">4,626</span>
@@ -154,8 +155,7 @@
           </p>
           <p>
             81% of characters (2,990 of 3,690) declare at least one
-            allegiance, spread across 546 distinct houses, orders, and
-            factions. House Targaryen is the largest with 215 members,
+            allegiance, spread across 546 distinct allegiances (houses, orders, and factions). House Targaryen is the largest with 215 members,
             followed by the Night's Watch, the Citadel, House Frey,
             and House Stark. The full distribution is the long tail you
             would expect — a handful of dynasties and a fog of
@@ -178,11 +178,11 @@
           <p class="section-eyebrow">Chapter II</p>
           <h2 id="topography-title">The Shape of the Realm</h2>
           <p class="section-lede">
-            [PLACEHOLDER] Before we go looking for stories in the data, we
-            ask what kind of network this even is. A handful of giants and
-            a long tail of footnotes? Or something flatter? We compare the
-            real Westeros network against a randomly-rewired counterpart
-            to see what's distinctive about it.
+            Before we go looking for stories in the data, we ask what kind
+            of network this even is. A handful of giants and a long tail
+            of footnotes? Or something flatter? We compare the real
+            Westeros network against a randomly-rewired counterpart to
+            see what's distinctive about it.
           </p>
         </div>
 
@@ -218,55 +218,52 @@
         <figure class="figure-block">
           <img
             src="figures/network_analysis/house_assortativity_distribution.png"
-            alt="Histogram of house assortativity coefficients computed on 100 configuration-model rewirings, with the real network's coefficient marked for comparison."
+            alt="Histogram of allegiance assortativity coefficients computed on 100 configuration-model rewirings, with the real network's coefficient marked for comparison."
           />
           <figcaption>
-            The same null-model comparison applied to house assortativity:
-            do characters from the same allegiance group connect to each
+            The same null-model comparison applied to allegiance assortativity:
+            do characters from the same allegiance connect to each
             other more often than chance predicts in a network with the same
             degree sequence? A real-network value far above the null
-            distribution is direct evidence of house homophily — the
+            distribution is direct evidence of allegiance homophily — the
             structural reason Louvain community detection works as well as
             it does in the next chapter.
           </figcaption>
         </figure>
 
-        <div class="prose">
-          <p>
-            [PLACEHOLDER COPY] Short narrative paragraph the team writes
-            to bridge from "the dataset looks like X" to "and that means
-            we should look at Y next." Calls forward to the houses
-            section.
-          </p>
-        </div>
+        <!--
+          TODO(team): bridging paragraph from "what the topology looks like"
+          to "and so we go looking for allegiances next." Keep it short — one or
+          two sentences max, pointing forward to Chapter III.
+        -->
       </section>
 
-      <!-- ============== 3. HOUSES (Louvain vs true) ============== -->
-      <section id="houses" class="section" aria-labelledby="houses-title">
+      <!-- ============== 3. ALLEGIANCES (Louvain vs true) ============== -->
+      <section id="allegiances" class="section" aria-labelledby="allegiances-title">
         <div class="section-heading">
           <p class="section-eyebrow">Chapter III</p>
-          <h2 id="houses-title">Predicting the Houses</h2>
+          <h2 id="allegiances-title">Predicting the Allegiances</h2>
           <p class="section-lede">
-            [PLACEHOLDER] The map of Westeros divides the realm into
-            houses; the wiki labels every character with one. But could
-            we recover that division from the network alone — without
-            ever reading a banner? We run Louvain community detection on
-            the cleaned graph and compare the algorithm's communities to
-            the true house labels.
+            The map of Westeros divides the realm into allegiances; the
+            wiki labels every character with one. But could we recover
+            that division from the network alone — without ever reading
+            a banner? We run Louvain community detection on the cleaned
+            graph and compare the algorithm's communities to the true
+            allegiance labels.
           </p>
         </div>
 
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/louvian_plot.png"
-            alt="The Westeros affiliation network with each node coloured by the Louvain community it was assigned to, with no access to the wiki's house labels."
+            alt="The Westeros affiliation network with each node coloured by the Louvain community it was assigned to, with no access to the wiki's allegiance labels."
           />
           <figcaption>
             Louvain community detection applied to the cleaned affiliation
             network. Each colour is a community the algorithm found purely
             from edge structure, without ever reading a banner. The visual
             question — and the one the next panels measure — is how closely
-            those algorithmic communities align with the houses readers
+            those algorithmic communities align with the allegiances readers
             already know.
           </figcaption>
         </figure>
@@ -275,25 +272,25 @@
           <figure class="figure-block figure-half">
             <img
               src="figures/graph_analysis/social_affiliation_graph.png"
-              alt="The same affiliation network coloured by each character's true house label, for visual comparison with the Louvain communities above."
+              alt="The same affiliation network coloured by each character's true allegiance label, for visual comparison with the Louvain communities above."
             />
             <figcaption>
-              The same network coloured by ground-truth house labels.
+              The same network coloured by ground-truth allegiance labels.
               Comparing this against the Louvain panel above shows where
               the algorithm aligns with canon and where it splits or merges
-              house boundaries.
+              allegiance boundaries.
             </figcaption>
           </figure>
           <figure class="figure-block figure-half">
             <img
               src="figures/graph_analysis/community_purity_homogeneity.png"
-              alt="Quantitative measures of community quality: purity and homogeneity scores comparing Louvain communities against the true house labels."
+              alt="Quantitative measures of community quality: purity and homogeneity scores comparing Louvain communities against the true allegiance labels."
             />
             <figcaption>
               Two quality measures. Purity asks how dominated each Louvain
-              community is by its largest house; homogeneity asks how mixed
+              community is by its largest allegiance; homogeneity asks how mixed
               the communities are overall. High values on both indicate the
-              algorithm recovered the house structure.
+              algorithm recovered the allegiance structure.
             </figcaption>
           </figure>
         </div>
@@ -301,28 +298,28 @@
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/group_modal_community_completeness.png"
-            alt="Per-house completeness chart showing what fraction of each house's members land in its modal Louvain community."
+            alt="Per-allegiance completeness chart showing what fraction of each allegiance's members land in its modal Louvain community."
           />
           <figcaption>
-            Per-house completeness: of all members of a given house, what
-            fraction land in that house's largest Louvain community. High
-            completeness means the house stays intact under community
+            Per-allegiance completeness: of all members of a given allegiance, what
+            fraction land in that allegiance's largest Louvain community. High
+            completeness means the allegiance stays intact under community
             detection; low completeness means the algorithm splits the
-            house across multiple communities.
+            allegiance across multiple communities.
           </figcaption>
         </figure>
 
         <figure class="figure-block">
           <img
             src="figures/graph_analysis/allegiance_prediction_vs_null.png"
-            alt="Comparison of the Louvain-to-house prediction quality against the distribution from a configuration-model null."
+            alt="Comparison of the Louvain-to-allegiance prediction quality against the distribution from a configuration-model null."
           />
           <figcaption>
             Validation against a null model. How does the
-            Louvain–house alignment compare to what a randomly-rewired
+            Louvain–allegiance alignment compare to what a randomly-rewired
             network with the same degree sequence would produce? A
             real-network score well above the null distribution is evidence
-            that the network's structure genuinely encodes house affiliation,
+            that the network's structure genuinely encodes allegiance,
             beyond what edge density alone could explain.
           </figcaption>
         </figure>
@@ -334,22 +331,20 @@
           />
           <figcaption>
             A case study within the Targaryen super-community. Louvain
-            doesn't only recover houses — it also discovers sub-communities
+            doesn't only recover allegiances — it also discovers sub-communities
             along historical fault lines. Targaryens of different eras end
-            up in distinct Louvain groups, even though the wiki labels them
-            all as one house. This is the algorithm finding political memory
+            up in distinct Louvain communities, even though the wiki labels them
+            all as one allegiance. This is the algorithm finding political memory
             the affiliation network alone made visible.
           </figcaption>
         </figure>
 
-        <div class="prose">
-          <p>
-            [PLACEHOLDER COPY] One or two paragraphs reading the result:
-            where Louvain succeeds (Starks, Targaryens), where it stumbles
-            (mixed-allegiance characters, the Night's Watch), and what
-            that tells us about how houses actually work in the text.
-          </p>
-        </div>
+        <!--
+          TODO(team): interpretation paragraph(s) reading the result —
+          where Louvain succeeds (Starks, Targaryens), where it stumbles
+          (mixed-allegiance characters, the Night's Watch), and what that
+          says about how allegiances actually work in the text.
+        -->
       </section>
 
       <!-- ============== 4. STORYLINES (TF-IDF wordclouds) ============== -->
@@ -361,7 +356,7 @@
             Network structure tells us who is connected to whom; the text
             tells us <em>about what</em>. We combine biography text and
             attributed quotes, then use TF-IDF to surface the words that
-            make each character or allegiance group distinctive. These are
+            make each character or allegiance distinctive. These are
             not simply the most common words, but the words that separate
             one storyline from the others.
           </p>
@@ -387,13 +382,13 @@
         <figure class="figure-block">
           <img
             src="figures/word_clouds/house_cloud.png"
-            alt="Grid of TF-IDF word clouds for major allegiance groups in A Song of Ice and Fire, showing the words most distinctive to each group's collected character pages."
+            alt="Grid of TF-IDF word clouds for major allegiances in A Song of Ice and Fire, showing the words most distinctive to each allegiance's collected character pages."
           />
           <figcaption>
-            The language of allegiance groups. Some groups are noble houses,
+            The language of allegiances. Some allegiances are noble houses,
             such as Stark, Lannister, and Targaryen; others are institutions
             or factions, such as the Citadel, the Night's Watch, the Faith
-            of the Seven, and Mance Rayder's wildling group. Pooling members
+            of the Seven, and Mance Rayder's wildling allegiance. Pooling members
             reveals collective vocabularies, but also inherited quirks:
             Lannister's <code>duck</code> token comes mainly from Tyrion's
             corpus, not from a broader Lannister theme.
@@ -405,7 +400,7 @@
             The word clouds add a text layer to the network analysis. The
             network shows where characters sit socially; TF-IDF shows the
             story-world vocabulary that surrounds them. Character clouds tend
-            to recover local arcs and settings, while group clouds recover
+            to recover local arcs and settings, while allegiance clouds recover
             broader collective identities: northern geography around Stark,
             dragons and Valyrian language around Targaryen, seafaring around
             Greyjoy, and institutional vocabulary around the Citadel.
@@ -425,15 +420,25 @@
           <p class="section-eyebrow">Chapter V</p>
           <h2 id="karma-title">The Karma of Conflict</h2>
           <p class="section-lede">
-            [PLACEHOLDER] A network shows who is connected. The text
-            shows what they talk about. Neither tells us how they
-            <em>feel</em> about one another. For the top 100 most
-            connected characters, we asked a local language model to read
-            the biographies and rate each directed relationship on a
-            one-to-ten karma scale. The result is a map of who fights
-            whom — and a reminder that this is a conflict-driven story.
+            A network shows who is connected. The text shows what they
+            talk about. Neither tells us how they <em>feel</em> about one
+            another. For the top 100 most connected characters, we asked
+            a local language model to read the biographies and rate each
+            directed relationship on a one-to-ten karma scale. The result
+            is a map of who fights whom — and a reminder that this is a
+            conflict-driven story.
           </p>
         </div>
+
+        <aside class="stat-callout" aria-label="Headline finding">
+          <span class="stat-callout-number">2.7&times;</span>
+          <span class="stat-callout-text">
+            Among <strong>5,159</strong> LLM-scored character
+            relationships, hostile ratings (1–2) outnumber warm ones
+            (9–10) by roughly <strong>2.7 to 1</strong>. Westeros is a
+            world that runs on enmity.
+          </span>
+        </aside>
 
         <figure class="figure-block">
           <img
@@ -441,27 +446,18 @@
             alt="Histogram of LLM-scored karma values for 5,159 character relationships, coloured crimson at the low end and gold at the high end. The bars peak at the neutral middle (score of 5), with a long tail of low scores and a sparse tail of high scores."
           />
           <figcaption>
-            Strong feelings tilt hostile. Among 5,159 LLM-scored
-            character relationships, roughly <strong>2.7×</strong> as many
-            land in the 1–2 range as in the 9–10 range. The spike at 5
-            is the model's neutral hedge; the asymmetry to either side
-            is the story.
+            The full distribution of LLM-scored karma. The spike at 5 is
+            the model's neutral hedge; the asymmetry to either side — a
+            long crimson tail of hostility, a sparser gold tail of warmth
+            — is the story.
           </figcaption>
         </figure>
 
-        <figure class="figure-block">
-          <div class="figure-placeholder">
-            <span class="placeholder-label">Figure 5.2 · placeholder</span>
-            <span class="placeholder-file">figures/karma-conflict-graph.png</span>
-            <span class="placeholder-desc">
-              Network of the lowest-karma edges — who hates whom.
-            </span>
-          </div>
-          <figcaption>
-            [PLACEHOLDER CAPTION] The skeleton of the saga's conflicts:
-            the lowest-karma edges form their own narrative graph.
-          </figcaption>
-        </figure>
+        <!--
+          TODO(team): Figure 5.2 — the lowest-karma conflict graph.
+          Drop the rendered figure into figures/karma_network/ and replace
+          this placeholder with a real <figure> block once it's exported.
+        -->
 
         <h3 class="subsection-title">Ten points of view</h3>
         <p class="prose-note">
@@ -532,7 +528,7 @@
             <img src="figures/ego_networks/petyr_baelish.png" alt="Karma ego network for Petyr Baelish." />
             <figcaption>
               <strong>Petyr Baelish</strong>
-              <span>Littlefinger's graph is mostly grey rather than green: a web of instrumental contacts across houses, with red edges where manipulation turns into direct harm.</span>
+              <span>Littlefinger's graph is mostly grey rather than green: a web of instrumental contacts across allegiances, with red edges where manipulation turns into direct harm.</span>
             </figcaption>
           </figure>
           <figure class="figure-block">
@@ -544,16 +540,13 @@
           </figure>
         </div>
 
-        <div class="prose">
-          <p>
-            [PLACEHOLDER COPY] One or two paragraphs reading the karma
-            results: the story is structured around enmity, not
-            friendship; the average pairwise sentiment is hostile; the
-            characters with high outgoing karma are surprisingly often
-            the ones who die. End with the link to the explainer
-            notebook.
-          </p>
-        </div>
+        <!--
+          TODO(team): closing interpretation paragraph(s). Read the karma
+          results — the saga is structured around enmity rather than
+          friendship; mean pairwise sentiment is hostile; the highest
+          outgoing-karma characters disproportionately die. End with a
+          pointer to the explainer notebook.
+        -->
       </section>
 
       <!-- ============== DOWNLOADS ============== -->
@@ -572,27 +565,27 @@
           <article class="download-card">
             <h3>Cleaned character network</h3>
             <p>Characters with allegiance and cleaned affiliation links.</p>
-            <a href="characters_enriched_v3.csv" download>Download CSV</a>
+            <a href="characters_enriched_v3.csv" download>Download CSV <span class="filesize">(574&nbsp;KB)</span></a>
           </article>
           <article class="download-card">
             <h3>Karma-scored edges</h3>
             <p>Source–target pairs among the top 100 with 1–10 karma scores.</p>
-            <a href="karma_edges_v3.csv" download>Download CSV</a>
+            <a href="karma_edges_v3.csv" download>Download CSV <span class="filesize">(165&nbsp;KB)</span></a>
           </article>
           <article class="download-card">
             <h3>Top 100 hubs</h3>
             <p>The highest outgoing-degree characters after cleanup.</p>
-            <a href="top100_outgoing_v3.csv" download>Download CSV</a>
+            <a href="top100_outgoing_v3.csv" download>Download CSV <span class="filesize">(82&nbsp;KB)</span></a>
           </article>
           <article class="download-card">
             <h3>Quote corpus</h3>
             <p>Per-character quotes with speaker and recipient IDs where available.</p>
-            <a href="characters_quotes.csv" download>Download CSV</a>
+            <a href="characters_quotes.csv" download>Download CSV <span class="filesize">(1.1&nbsp;MB)</span></a>
           </article>
           <article class="download-card">
             <h3>Character biographies</h3>
             <p>Biography text used as context for analysis and karma scoring.</p>
-            <a href="characters_bio.csv" download>Download CSV</a>
+            <a href="characters_bio.csv" download>Download CSV <span class="filesize">(4.1&nbsp;MB)</span></a>
           </article>
         </div>
 
@@ -600,13 +593,16 @@
           <a
             class="button button-primary"
             href="https://nbviewer.org/github/oggefaderen/CompSciProject/blob/main/explainer.ipynb"
-            rel="noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Read the explainer notebook
           </a>
           <a
             class="button button-secondary"
             href="https://github.com/oggefaderen/CompSciProject/raw/main/explainer.ipynb"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Download notebook
           </a>
@@ -622,5 +618,37 @@
       <a href="#top">Back to the top</a>
     </footer>
     <script src="./ego-lightbox.js"></script>
+    <script>
+      // Active-section highlighting in the sticky nav.
+      (function () {
+        const links = Array.from(document.querySelectorAll(".nav-links a[href^='#']"));
+        const map = new Map();
+        for (const link of links) {
+          const id = link.getAttribute("href").slice(1);
+          const target = document.getElementById(id);
+          if (target) map.set(target, link);
+        }
+        if (map.size === 0) return;
+
+        const setActive = (link) => {
+          for (const l of links) l.removeAttribute("aria-current");
+          if (link) link.setAttribute("aria-current", "true");
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            // Pick the visible section closest to the top.
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (visible.length > 0) {
+              setActive(map.get(visible[0].target));
+            }
+          },
+          { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+        );
+        for (const section of map.keys()) observer.observe(section);
+      })();
+    </script>
   </body>
 </html>
