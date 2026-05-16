@@ -27,6 +27,7 @@
           pkgs.python3Packages.nltk
           pkgs.python3Packages.python-louvain
           pkgs.python3Packages.wordcloud
+          pkgs.python3Packages.scikit-learn
         ];
 		
         env.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
